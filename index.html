@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="img/logo_mark.webp">
+<meta name="theme-color" content="#0B2F7A">
+<title>Sabah GO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=13">
+</head>
+<body>
+<div id="stage">
+  <aside class="side">
+    <div class="side-brand">
+      <img src="img/logo.webp" alt="Sabah GO — Your journey enriched">
+    </div>
+    <p class="side-lead">Interactive mobile app prototype — Sabah Tourism Digital Platform &amp; Tourist Entry Contribution (TEC) system.</p>
+    <h4>Jump to screen</h4>
+    <div class="side-links" id="sideLinks"></div>
+    <p class="side-note">Every button in the phone is live. State (wallet, trips, points, pass) updates as you use it.</p>
+  </aside>
+  <div class="device">
+    <div class="phone" id="phone">
+      <div class="statusbar" aria-hidden="true"><span class="sb-time">9:41</span><span class="island"></span><span class="sb-icons"><svg viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2.5" width="3" height="9.5" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg viewBox="0 0 16 12"><path d="M8 11.5 5.6 9a3.4 3.4 0 0 1 4.8 0zM3.5 7a6.4 6.4 0 0 1 9 0l-1.4 1.4a4.4 4.4 0 0 0-6.2 0zM1 4.5a10 10 0 0 1 14 0l-1.4 1.4a8 8 0 0 0-11.2 0z"/></svg><span class="batt"><i></i></span></span></div>
+      <div id="app"></div>
+      <div id="sheetWrap" class="sheet-wrap" aria-hidden="true" onclick="if(event.target===this)closeSheet()"><div class="sheet" id="sheet" role="dialog" aria-modal="true" tabindex="-1"></div></div>
+      <div id="toast" class="toast" role="status" aria-live="polite"></div>
+      <div class="homebar" aria-hidden="true"></div>
+    </div>
+  </div>
+</div>
+<script src="data.js?v=13"></script>
+<script src="app.js?v=13"></script>
+</body>
+</html>
