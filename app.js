@@ -255,7 +255,7 @@ SCREENS.onboard = () => {
     <div class="bd">
       <span class="kick"><span class="bub ${o.c}">${ic(o.icn)}</span>${o.k}</span>
       <h1>${o.h}</h1><p>${o.p}</p>
-      <div class="ft"><div class="dots">${OB.map((_,j)=>`<button onclick="S.obIdx=${j};refresh()" aria-label="Slide ${j+1}" style="padding:6px 0"><i class="${j===i?'on':''}" style="display:block;width:${j===i?26:8}px;height:8px;border-radius:4px;background:${j===i?'var(--blue)':'#D4DEEE'}"></i></button>`).join('')}</div>
+      <div class="ft"><div class="dots">${OB.map((_,j)=>`<button onclick="S.obIdx=${j};refresh()" aria-label="Slide ${j+1}"${j===i?' aria-current="step"':''}><i class="${j===i?'on':''}"></i></button>`).join('')}</div>
       <button class="btn btn-primary" onclick="${last?"replace('lang',{onb:1})":'S.obIdx++;render()'}">${last?'Get Started':'Next'} ${ic('chevR')}</button></div>
     </div></div></div>`;
 };
