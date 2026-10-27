@@ -483,12 +483,12 @@ select.inp{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns
 .chatbar .mic{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:var(--ink3)}
 .chatbar .mic.on{color:#fff;background:var(--red);animation:pulse 1s infinite}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(240,67,106,.5)}100%{box-shadow:0 0 0 14px rgba(240,67,106,0)}}
-.siti-hero{position:relative;margin:0 16px 4px;border-radius:24px;overflow:hidden;height:210px;background:var(--gradNavy)}
-.siti-hero img{position:absolute;left:-6px;bottom:0;height:100%;width:56%;object-fit:cover;object-position:50% 10%}
-.siti-hero .bub2{position:absolute;right:14px;top:24px;width:52%;background:#fff;border-radius:18px 18px 18px 4px;padding:12px 14px;font-size:13px;line-height:1.45;color:var(--ink);box-shadow:0 10px 24px rgba(0,0,0,.2)}
-.siti-hero .bub2 b{color:var(--blue)}
-.siti-hero .tag{position:absolute;right:14px;bottom:16px;color:#fff;font-size:11px;display:flex;align-items:center;gap:6px;opacity:.9}
-.siti-hero .tag i{width:8px;height:8px;border-radius:50%;background:#4ADE80;box-shadow:0 0 0 3px rgba(74,222,128,.25)}
+.stella-hero{position:relative;margin:0 16px 4px;border-radius:24px;overflow:hidden;height:210px;background:var(--gradNavy)}
+.stella-hero img{position:absolute;left:-6px;bottom:0;height:100%;width:56%;object-fit:cover;object-position:50% 10%}
+.stella-hero .bub2{position:absolute;right:14px;top:24px;width:52%;background:#fff;border-radius:18px 18px 18px 4px;padding:12px 14px;font-size:13px;line-height:1.45;color:var(--ink);box-shadow:0 10px 24px rgba(0,0,0,.2)}
+.stella-hero .bub2 b{color:var(--blue)}
+.stella-hero .tag{position:absolute;right:14px;bottom:16px;color:#fff;font-size:11px;display:flex;align-items:center;gap:6px;opacity:.9}
+.stella-hero .tag i{width:8px;height:8px;border-radius:50%;background:#4ADE80;box-shadow:0 0 0 3px rgba(74,222,128,.25)}
 .smenu{display:flex;flex-direction:column;gap:8px}
 .smenu button{display:flex;align-items:center;gap:12px;background:#fff;border-radius:16px;padding:11px 12px;text-align:left;box-shadow:var(--shadow);width:100%}
 .smenu .ico{width:38px;height:38px;border-radius:12px;background:var(--sky);color:var(--blue);display:grid;place-items:center;flex-shrink:0}
@@ -761,7 +761,7 @@ button.card[onclick*="999"]{background:#B8183F!important}
 /* bottom nav: the raised Wallet ring overlaps upward; its label shares the other tabs' baseline */
 .nav .center{top:0}
 .nav .center .ring{margin-top:-38px}
-/* SITI button steps aside while scrolling down so it never covers content; returns on scroll up */
+/* Stella button steps aside while scrolling down so it never covers content; returns on scroll up */
 .fab{transition:transform .25s var(--ease),opacity .2s}
 .scr.fab-away .fab{opacity:0;transform:translateY(12px) scale(.85);pointer-events:none}
 /* readable minimum for secondary text (12px) */
@@ -788,7 +788,7 @@ button.card[onclick*="999"]{background:#B8183F!important}
 .cat .c-navy{background:#E6ECF8;color:#0A2463}
 .cat .c-gold{background:#FFF5D6;color:#8A6100}
 @media (hover:hover){ .cat:hover .bub{box-shadow:inset 0 0 0 1px rgba(10,36,99,.05),0 8px 16px -8px rgba(10,36,99,.35)} }
-/* SITI banner: solid navy text panel on the left, photo on the right, height follows content */
+/* Stella banner: solid navy text panel on the left, photo on the right, height follows content */
 .banner{height:auto;min-height:176px;background:#0A2463;display:flex;align-items:center}
 .banner img{left:auto;width:50%}
 .banner::before{background:linear-gradient(90deg,#0A2463 0%,#0A2463 48%,rgba(10,36,99,.55) 62%,rgba(10,36,99,0) 82%)}
@@ -806,3 +806,10 @@ button.card[onclick*="999"]{background:#B8183F!important}
 .splash .logo{width:236px;height:auto;animation:pop .7s cubic-bezier(.2,1.4,.4,1);filter:drop-shadow(0 12px 24px rgba(10,36,99,.15))}
 .home-logo .lg .mark,.mark{width:50px;height:auto;mix-blend-mode:normal;border-radius:0;object-fit:contain}
 .side-brand img{width:150px;height:auto;mix-blend-mode:normal;border-radius:0}
+/* Stella imagery framing */
+.fab img,.botrow img{object-position:50% 35%}
+.banner img{object-position:50% 20%}
+.stella-hero img{object-position:50% 0}
+.stella-hero img{-webkit-mask-image:linear-gradient(90deg,#000 72%,transparent);mask-image:linear-gradient(90deg,#000 72%,transparent)}
+.stella-hero .tag{width:52%;align-items:flex-start;line-height:1.35;font-size:11.5px}
+.stella-hero .tag i{flex-shrink:0;margin-top:4px}

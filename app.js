@@ -156,7 +156,7 @@ function enhance(entered){
   const name = h1 ? h1.textContent.trim() : 'Sabah GO';
   document.title = name==='Sabah GO' ? 'Sabah GO' : `${name} · Sabah GO`;
   if(entered && h1 && document.readyState==='complete'){ h1.setAttribute('tabindex','-1'); h1.focus({preventScroll:true}); }
-  const scr=app.firstElementChild, c=app.querySelector('.content'); // SITI button hides on scroll down, returns on scroll up
+  const scr=app.firstElementChild, c=app.querySelector('.content'); // Stella button hides on scroll down, returns on scroll up
   if(scr && c && scr.querySelector('.fab')){ let y=c.scrollTop; c.addEventListener('scroll',()=>{ const d=c.scrollTop-y; if(Math.abs(d)<6) return; scr.classList.toggle('fab-away', d>0 && c.scrollTop>80); y=c.scrollTop; },{passive:true}); }
 }
 function refresh(){
@@ -216,7 +216,7 @@ function navBar(active){
   <button class="center ${active==='wallet'?'on':''}" onclick="tab('wallet')" aria-label="${t('wallet')}"><span class="ring">${ic('wallet')}</span><span>${t('wallet')}</span></button>
   ${it('rewards','gift',t('rewards'))}${it('profile','user',t('profile'))}</nav>`;
 }
-function fab(){ return `<button class="fab" onclick="go('siti')" aria-label="Ask SITI, your AI travel assistant"><img src="img/siti.jpg" alt=""><span class="spark">${ic('sparkle')}</span><span class="lbl">Ask SITI</span></button>`; }
+function fab(){ return `<button class="fab" onclick="go('stella')" aria-label="Ask Stella, your AI travel assistant"><img src="img/stella.jpg" alt=""><span class="spark">${ic('sparkle')}</span><span class="lbl">Ask Stella</span></button>`; }
 function page({header='', body='', nav=null, cls='', footer='', withFab=false}){
   return `<div class="scr ${cls} ${nav?'has-nav':'no-nav'} ${footer?'has-footer':''}">${header}<main class="content">${body}</main>${footer?`<div class="footer">${footer}</div>`:''}${withFab?fab():''}${nav?navBar(nav):''}</div>`;
 }
@@ -349,7 +349,7 @@ SCREENS.home = () => {
       <div class="sec"><div class="grid4">${cats.map(([k,icn,c,on])=>`<button class="cat" onclick="${on}"><span class="bub ${c}">${ic(icn)}</span>${t(k)}</button>`).join('')}</div></div>
       <div class="sec"><div class="sec-h"><h2>${t('popular')}</h2><button onclick="go('explore')">${t('seeAll')}</button></div>
         <div class="hscroll">${DEST.slice(0,6).map(d=>`<div class="dcard"><img src="${img(d.img)}" alt="" loading="lazy"><span class="rt" aria-label="Rated ${d.rating}">${ic('star')}${d.rating}</span>${heartBtn(d.id,'hrt')}<span class="t"><button class="stretch" onclick="go('dest','${d.id}')"><b>${d.name}</b></button><small>${d.tag}</small></span></div>`).join('')}</div></div>
-      <div class="sec"><button class="banner" onclick="go('siti',{prompt:'Plan a 5-day trip in Sabah'})"><img src="img/villas.jpg" alt=""><span class="bt"><span class="kick">${ic('sparkle')}${S.lang==='ms'?'SITI · Perancang perjalanan AI':'SITI · AI trip planner'}</span><h3>${t('banner')}</h3><p>${t('bannerSub')}</p><span class="cta">${ic('sparkle')}${t('bannerCta')}</span></span></button></div>
+      <div class="sec"><button class="banner" onclick="go('stella',{prompt:'Plan a 5-day trip in Sabah'})"><img src="img/stella_banner.jpg" alt=""><span class="bt"><span class="kick">${ic('sparkle')}${S.lang==='ms'?'Stella · Perancang perjalanan AI':'Stella · AI trip planner'}</span><h3>${t('banner')}</h3><p>${t('bannerSub')}</p><span class="cta">${ic('sparkle')}${t('bannerCta')}</span></span></button></div>
       <div class="sec"><div class="sec-h"><h2>${t('reco')}</h2><button onclick="go('listing','act')">${t('seeAll')}</button></div>
         <div class="hscroll">${reco.map(([im,n,s,on])=>`<button class="rcard" onclick="${on}"><span class="im" style="display:block"><img src="${img(im)}" alt="" loading="lazy"></span><b>${n}</b><small>${s}</small></button>`).join('')}</div></div>
       <div class="sec"><div class="sec-h"><h2>${t('events')}</h2><button onclick="go('events')">${t('seeAll')}</button></div>
@@ -385,7 +385,7 @@ function searchResults(q){
   const ds = DEST.filter(d=>(d.name+d.tag+d.loc+d.desc).toLowerCase().includes(q));
   const its = Object.entries(ITEMS).filter(([k,v])=>(v.name+v.sub).toLowerCase().includes(q));
   const evs = EVENTS.filter(e=>(e.name+e.sub).toLowerCase().includes(q));
-  if(!ds.length && !its.length && !evs.length) return `<div class="empty"><span class="bub c-blue">${ic('search')}</span><b>No results for “${q}”</b><p>Try another word, or let SITI find it for you.</p><button class="btn btn-primary btn-sm" onclick="go('siti',{prompt:'${q.replace(/'/g,'')}'})">Ask SITI</button></div>`;
+  if(!ds.length && !its.length && !evs.length) return `<div class="empty"><span class="bub c-blue">${ic('search')}</span><b>No results for “${q}”</b><p>Try another word, or let Stella find it for you.</p><button class="btn btn-primary btn-sm" onclick="go('stella',{prompt:'${q.replace(/'/g,'')}'})">Ask Stella</button></div>`;
   return `<div class="pad">${ds.length?`<div class="list-label">Destinations</div><div class="dl" style="padding:0">${ds.map(drow).join('')}</div>`:''}
     ${its.length?`<div class="list-label">Activities, food & stays</div><div class="stack">${its.map(([k,v])=>icard(k,v)).join('')}</div>`:''}
     ${evs.length?`<div class="list-label">Events</div><div class="list">${evs.map(e=>li({icon:'cal',title:e.name,sub:e.d+' '+e.m+' · '+e.sub,onclick:`go('event','${e.id}')`})).join('')}</div>`:''}</div>`;
@@ -421,7 +421,7 @@ SCREENS.dest = (id) => {
   if(T==='overview') body=`<p class="para">${d.desc}</p>
     <div class="facts" style="margin-top:16px"><div class="fact">${ic('pin')}<b>Location</b><span>${d.loc}</span></div><div class="fact">${ic('sun')}<b>Best time</b><span>${d.best}</span></div><div class="fact">${ic('users')}<b>Ideal for</b><span>${d.ideal}</span></div></div>
     <div class="bigimg" style="margin-top:16px"><img src="${img(d.gallery)}" alt="${d.name}"></div>
-    <div class="row" style="gap:10px;margin-top:14px"><button class="btn btn-light btn-sm" style="flex:1" onclick="toast('Opening navigation to ${d.name}','nav')">${ic('nav')}Directions</button><button class="btn btn-light btn-sm" style="flex:1" onclick="go('siti',{prompt:'What is the weather in ${d.name}'})">${ic('sun')}Weather</button><button class="btn btn-light btn-sm" style="flex:1" onclick="shareIt('${d.name}')">${ic('share')}Share</button></div>
+    <div class="row" style="gap:10px;margin-top:14px"><button class="btn btn-light btn-sm" style="flex:1" onclick="toast('Opening navigation to ${d.name}','nav')">${ic('nav')}Directions</button><button class="btn btn-light btn-sm" style="flex:1" onclick="go('stella',{prompt:'What is the weather in ${d.name}'})">${ic('sun')}Weather</button><button class="btn btn-light btn-sm" style="flex:1" onclick="shareIt('${d.name}')">${ic('share')}Share</button></div>
     <div class="info-box" style="margin-top:14px">${ic('ticket')}<span>Show your <b>Digital Tourist Pass</b> at park gates for faster entry and 10% off activities here.</span></div>`;
   if(T==='attr') body=`<div class="stack">${d.attractions.map(([n,s,im])=>`<div class="icard"><span class="th"><img src="${img(im)}" alt=""></span><span class="tx"><b>${n}</b><small>${s}</small><span class="pr"><span class="small muted" style="font-weight:500">${d.name}</span><button class="btn btn-soft btn-sm" style="height:32px" onclick="addToTrip('${n.replace(/'/g,'')}','${im}','${d.id}')">${ic('plus')}Add</button></span></span></div>`).join('')}</div>`;
   if(T==='act') body=`<div class="stack">${d.acts.map(k=>icard(k,ITEMS[k])).join('')||'<p class="muted">No activities listed yet.</p>'}</div>`;
@@ -432,16 +432,16 @@ SCREENS.dest = (id) => {
       <div class="tt"><h1>${d.name}</h1><p>${d.tag}</p><div class="row" style="gap:10px;margin-top:8px;font-size:12.5px">${stars(d.rating)}<span style="opacity:.85">${d.reviews.toLocaleString()} reviews</span></div></div></div>
       <div class="dbody"><div class="tabs" aria-label="Sections">${tabs.map(([k,l,icn])=>`<button class="${T===k?'on':''}" onclick="S.dTab='${k}';refresh()">${ic(icn)}${l}</button>`).join('')}</div>
       <div class="pad" style="padding-top:16px">${body}</div></div>`,
-    footer: `<div class="row" style="gap:10px"><button class="ib" style="width:52px;height:52px;border-radius:16px" onclick="go('siti',{prompt:'Tell me about ${d.name}'})" aria-label="Ask SITI about ${d.name}"><img src="img/siti.jpg" alt="" style="width:36px;height:36px;border-radius:50%;object-fit:cover;object-position:50% 15%"></button><button class="btn btn-primary" style="flex:1" onclick="planSheet('${d.id}')">${ic('cal')} Plan Your Trip</button></div>`
+    footer: `<div class="row" style="gap:10px"><button class="ib" style="width:52px;height:52px;border-radius:16px" onclick="go('stella',{prompt:'Tell me about ${d.name}'})" aria-label="Ask Stella about ${d.name}"><img src="img/stella.jpg" alt="" style="width:36px;height:36px;border-radius:50%;object-fit:cover;object-position:50% 35%"></button><button class="btn btn-primary" style="flex:1" onclick="planSheet('${d.id}')">${ic('cal')} Plan Your Trip</button></div>`
   });
 };
 function planSheet(id){
   const d=destById(id);
-  sheet(`<h3>Plan ${d.name}</h3><p class="lead">Add it to your Sabah Adventure, or let SITI build the days around it.</p>
+  sheet(`<h3>Plan ${d.name}</h3><p class="lead">Add it to your Sabah Adventure, or let Stella build the days around it.</p>
   <div class="list-label" style="margin-top:0">Add to a day of your trip</div>
   <div class="chips" style="padding:0 0 4px">${TRIP_DAYS.map((x,i)=>`<button class="chip" onclick="addToTrip('${d.name}','${d.thumb}','${d.id}',${i})">Day ${i+1} · ${x.date}</button>`).join('')}</div>
   <div class="stack" style="margin-top:14px">
-  <button class="btn btn-primary btn-block" onclick="go('siti',{prompt:'Plan a trip including ${d.name}'})">${ic('sparkle')}Ask SITI to plan it</button>
+  <button class="btn btn-primary btn-block" onclick="go('stella',{prompt:'Plan a trip including ${d.name}'})">${ic('sparkle')}Ask Stella to plan it</button>
   <button class="btn btn-soft btn-block" onclick="closeSheet();S.dTab='act';refresh()">${ic('ticket')}Book an activity</button></div>`);
 }
 function addToTrip(name, im, destId, day){
@@ -668,7 +668,7 @@ SCREENS.trips = () => {
     return `<div class="day"><div class="rail"><span class="n"><small>DAY</small><b>${i+1}</b></span>${i<TRIP_DAYS.length-1?'<span class="v"></span>':''}</div>
     <div class="items"><h4>${d.title}</h4><small>${d.date}</small>${items.map(x=>`<button class="tl" onclick="goto('${x.go}')"><img src="${img(x.img)}" alt="" loading="lazy"><span style="min-width:0"><span class="tm">${x.tm}</span><b>${x.n}</b></span>${ic('chevR','chev')}</button>`).join('')}
     <button class="btn-ghost small b" style="margin-top:8px;height:32px" onclick="go('explore')">${ic('plus').replace('<svg','<svg style="width:14px;display:inline;vertical-align:-2px"')} Add to day ${i+1}</button></div></div>`;}).join('')
-    + `<div class="pad"><button class="btn btn-soft btn-block" onclick="go('siti',{prompt:'Optimise my 5-day itinerary'})">${ic('sparkle')}Ask SITI to optimise my days</button></div>`;
+    + `<div class="pad"><button class="btn btn-soft btn-block" onclick="go('stella',{prompt:'Optimise my 5-day itinerary'})">${ic('sparkle')}Ask Stella to optimise my days</button></div>`;
   if(seg==='book') body = S.bookings.length ? `<div class="pad stack">${S.bookings.map(b=>`<button class="icard" style="text-align:left;width:100%" onclick="go('bookingDetail','${b.id}')"><span class="th"><img src="${img(ITEMS[b.item].img)}" alt=""></span><span class="tx"><b>${b.name}</b><small>${b.date} · ${b.sub}</small><span class="pr"><span>${b.amt?rm(b.amt):'Pay at venue'}</span><span class="pill ${b.status==='Cancelled'?'red':'green'}">${b.status}</span></span></span></button>`).join('')}</div>`
     : `<div class="empty"><span class="bub c-blue">${ic('ticket')}</span><b>No bookings yet</b><p>Tours, stays and tickets you book will show here.</p><button class="btn btn-primary btn-sm" onclick="go('listing','act')">Browse activities</button></div>`;
   if(seg==='docs') body = `<div class="pad"><div class="list">
@@ -848,7 +848,7 @@ SCREENS.services = () => page({ withFab:true, header:hdr('Traveller Services',{s
   <div class="list-label">Health & guidance</div><div class="list">
     ${li({icon:'medical',title:'Medical tourism',sub:'Health screening & wellness packages',onclick:"go('booking','v_medical')"})}
     ${li({icon:'nav',title:'Navigation & guides',sub:'Offline maps · licensed guides',onclick:"toast('Offline map of Sabah downloaded','nav')"})}
-    ${li({icon:'lang',title:'Translation',sub:'Bahasa Malaysia, Kadazan & 12 languages',onclick:"go('siti',{prompt:'Translate basic phrases'})"})}
+    ${li({icon:'lang',title:'Translation',sub:'Bahasa Malaysia, Kadazan & 12 languages',onclick:"go('stella',{prompt:'Translate basic phrases'})"})}
     ${li({icon:'headset',title:'Help 24/7',sub:'Emergency & traveller support',onclick:"go('help')"})}</div></div>` });
 function rideSheet(){ sheet(`<h3>Book a ride</h3><p class="lead">Pay with Sabah GO Wallet. Licensed drivers only.</p>
   <label class="field"><span>Pickup</span><input class="inp" value="Shangri-La Tanjung Aru"></label><label class="field"><span>Drop-off</span><input class="inp" value="Jesselton Point Ferry Terminal"></label>
@@ -859,7 +859,7 @@ SCREENS.help = () => page({
   body: `<div class="pad">
     <button class="card row" style="width:100%;padding:16px;gap:14px;background:linear-gradient(120deg,#E8345E,#FF6B8B);color:#fff;text-align:left" onclick="callSheet('999','Emergency (Police, Ambulance, Fire)')"><span class="bub" style="background:rgba(255,255,255,.2);box-shadow:none">${ic('phone')}</span><span style="flex:1"><b style="font-size:17px">Emergency · 999</b><small style="display:block;opacity:.9">Police, ambulance & fire. Shares your location.</small></span>${ic('chevR','chev')}</button>
     <div class="list-label">Talk to someone</div><div class="list">
-      ${li({icon:'msg',title:'Chat with SITI',sub:'Instant answers in your language',onclick:"go('siti')"})}
+      ${li({icon:'msg',title:'Chat with Stella',sub:'Instant answers in your language',onclick:"go('stella')"})}
       ${li({icon:'headset',title:'Tourist hotline',sub:'+60 88-212 121 · 24 hours',onclick:"callSheet('+6088212121','Sabah Tourism hotline')"})}
       ${li({icon:'shield',title:'Tourist Police',sub:'Kota Kinabalu Tourist Police Unit',onclick:"callSheet('+6088258191','Tourist Police')"})}
       ${li({icon:'medical',title:'Nearest hospital',sub:'Queen Elizabeth Hospital · 6.1 km',onclick:"toast('Opening directions to hospital','nav')"})}
@@ -881,25 +881,25 @@ function sendReport(){
 function logoutSheet(){ sheet(`<h3>Log out?</h3><p class="lead">Your pass and bookings stay safe in your account.</p><div class="stack"><button class="btn btn-danger btn-block" onclick="S.loggedIn=false;tab('auth')">Log out</button><button class="btn btn-soft btn-block" onclick="closeSheet()">Cancel</button></div>`); }
 function callSheet(num, label){ sheet(`<div style="text-align:center"><span class="bub c-red" style="margin:6px auto 14px;width:64px;height:64px">${ic('phone')}</span><h3>Call ${num}?</h3><p class="lead">${label}</p></div><div class="stack"><a class="btn btn-primary btn-block" href="tel:${num}" onclick="closeSheet()" style="text-decoration:none">Call now</a><button class="btn btn-soft btn-block" onclick="closeSheet()">Cancel</button></div>`); }
 
-/* ---------- SITI AI ---------- */
-SCREENS.siti = (p={}) => {
-  const pending = p && p.prompt; if(pending){ p.prompt=null; setTimeout(()=>sitiSend(pending),300); }
+/* ---------- Stella AI ---------- */
+SCREENS.stella = (p={}) => {
+  const pending = p && p.prompt; if(pending){ p.prompt=null; setTimeout(()=>stellaSend(pending),300); }
   const menu=[['pin','Destination ideas','Tempat menarik di seluruh Sabah','Recommend destinations'],['cal','Plan my trip','Pelan itinerari peribadi','Plan a 5-day trip in Sabah'],['food','Food & experiences','Makanan, budaya & aktiviti unik','What should I eat'],['bed','Stays & transport','Hotel, penerbangan, feri & kereta','Where should I stay'],['lang','Translate','Terjemah bahasa','Translate basic phrases'],['alert','Emergency help','Bantuan kecemasan','Emergency help']];
-  return `<div class="scr"><header class="hdr white"><button class="ib" onclick="back()" aria-label="Back">${ic('chevL')}</button><img src="img/siti.jpg" alt="" style="width:40px;height:40px;border-radius:50%;object-fit:cover;object-position:50% 15%"><div class="hdr-t" style="text-align:left"><h1>SITI</h1><p style="color:var(--okText)">● AI Travel Assistant · online</p></div><button class="ib" onclick="S.chat=[];refresh();toast('New conversation','refresh')" aria-label="New chat">${ic('refresh')}</button></header>
+  return `<div class="scr"><header class="hdr white"><button class="ib" onclick="back()" aria-label="Back">${ic('chevL')}</button><img src="img/stella.jpg" alt="" style="width:40px;height:40px;border-radius:50%;object-fit:cover;object-position:50% 35%"><div class="hdr-t" style="text-align:left"><h1>Stella</h1><p style="color:var(--okText)">● AI Travel Assistant · online</p></div><button class="ib" onclick="S.chat=[];refresh();toast('New conversation','refresh')" aria-label="New chat">${ic('refresh')}</button></header>
   <main class="content" id="chatScroll" style="padding-top:14px">
-    <div class="siti-hero"><img src="img/siti2.jpg" alt="SITI, your Sabah travel assistant"><div class="bub2">Hai! Nama saya <b>Siti</b>. How can I help you explore Sabah today?</div><span class="tag"><i></i>Smart Interactive Tourism Intelligence</span></div>
-    ${S.chat.length?'':`<div class="pad smenu" style="margin-top:12px">${menu.map(([i,a,b,q])=>`<button onclick="sitiSend('${q}')"><span class="ico">${ic(i)}</span><span><b>${a}</b><small>${b}</small></span>${ic('chevR','chev')}</button>`).join('')}</div>`}
+    <div class="stella-hero"><img src="img/stella_hero.jpg" alt="Stella, your Sabah travel assistant"><div class="bub2">Bah, selamat datang ke Sabah! Saya <b>Stella</b>. How can I help you explore Sabah today?</div><span class="tag"><i></i>Smart Tourism Experience &amp; Local Lifestyle Assistant</span></div>
+    ${S.chat.length?'':`<div class="pad smenu" style="margin-top:12px">${menu.map(([i,a,b,q])=>`<button onclick="stellaSend('${q}')"><span class="ico">${ic(i)}</span><span><b>${a}</b><small>${b}</small></span>${ic('chevR','chev')}</button>`).join('')}</div>`}
     <div class="chat" id="chat">${S.chat.map(chatMsg).join('')}</div>
   </main>
-  <div class="chatbar"><button class="mic" id="mic" onclick="sitiMic()" aria-label="Voice input">${ic('mic')}</button><input id="ci" placeholder="Ask SITI anything…" onkeydown="if(event.key==='Enter')sitiSend(this.value)" aria-label="Message SITI"><button class="send" onclick="sitiSend($('#ci').value)" aria-label="Send">${ic('send')}</button></div></div>`;
+  <div class="chatbar"><button class="mic" id="mic" onclick="stellaMic()" aria-label="Voice input">${ic('mic')}</button><input id="ci" placeholder="Ask Stella anything…" onkeydown="if(event.key==='Enter')stellaSend(this.value)" aria-label="Message Stella"><button class="send" onclick="stellaSend($('#ci').value)" aria-label="Send">${ic('send')}</button></div></div>`;
 };
-const chatMsg = m => m.from==='me' ? `<div class="msg me">${m.html}</div>` : `<div class="botrow"><img src="img/siti.jpg" alt=""><div class="msg bot">${m.html}</div></div>`;
+const chatMsg = m => m.from==='me' ? `<div class="msg me">${m.html}</div>` : `<div class="botrow"><img src="img/stella.jpg" alt=""><div class="msg bot">${m.html}</div></div>`;
 const dayCard = (d, im, n, s, g) => `<button class="daycard" onclick="goto('${g}')"><img src="${img(im)}" alt=""><span style="min-width:0"><span class="d">${d}</span><b>${n}</b><small>${s}</small></span>${ic('chevR','chev')}</button>`;
-function sitiReply(q){
+function stellaReply(q){
   const s=q.toLowerCase(), has=(...w)=>w.some(x=>s.includes(x));
-  if(has('translat','terjemah','phrase')) return `Here are handy phrases in Bahasa Malaysia 🇲🇾<br><br><b>Terima kasih</b> — Thank you<br><b>Berapa harga?</b> — How much?<br><b>Di mana tandas?</b> — Where is the toilet?<br><b>Sedap!</b> — Delicious!<br><b>Kotobian tadau</b> — Kadazan greeting for Kaamatan 🌾<div class="qchips" style="margin-top:8px"><button onclick="sitiSend('Translate: I am allergic to peanuts')">Allergy phrase</button><button onclick="sitiSend('Translate directions phrases')">Directions</button></div>`;
+  if(has('translat','terjemah','phrase')) return `Here are handy phrases in Bahasa Malaysia 🇲🇾<br><br><b>Terima kasih</b> — Thank you<br><b>Berapa harga?</b> — How much?<br><b>Di mana tandas?</b> — Where is the toilet?<br><b>Sedap!</b> — Delicious!<br><b>Kotobian tadau</b> — Kadazan greeting for Kaamatan 🌾<div class="qchips" style="margin-top:8px"><button onclick="stellaSend('Translate: I am allergic to peanuts')">Allergy phrase</button><button onclick="stellaSend('Translate directions phrases')">Directions</button></div>`;
   if(has('emergenc','kecemasan','sos','help me','lost')) return `If you are in danger, call <b>999</b> now. I've also prepared:<div class="stack" style="gap:6px;margin-top:8px"><button class="btn btn-danger btn-sm" onclick="callSheet('999','Emergency')">${ic('phone')}Call 999</button><button class="btn btn-soft btn-sm" onclick="go('help')">${ic('headset')}Open Help 24/7</button></div>`;
-  if(has('itiner','plan','5-day','5 day','5 hari','optimis','rancang','atur')) return `Here's a 5-day Sabah plan matched to nature, islands and local culture 🌴<br>${dayCard('Day 1','kk_city','Kota Kinabalu','City, waterfront & seafood','dest:kk')}${dayCard('Day 2','manukan','Pulau Manukan','Snorkelling, beach & island air','dest:manukan')}${dayCard('Day 3','kinabalu_park','Kinabalu Park','Nature trails & cool mountain air','dest:kinabalu')}${dayCard('Day 4','kundasang2','Kundasang','Farms & mountain views','dest:kundasang')}${dayCard('Day 5','marimari','Mari-Mari Cultural Village','Culture, tradition & local food','dest:marimari')}<div class="row" style="gap:6px;margin-top:10px"><button class="btn btn-primary btn-sm" style="flex:1" onclick="S.tripSeg='itin';tab('trips');toast('Plan saved to My Trip','cal')">Save to My Trip</button><button class="btn btn-soft btn-sm" onclick="sitiSend('Make it cheaper')">Cheaper</button></div>`;
+  if(has('itiner','plan','5-day','5 day','5 hari','optimis','rancang','atur')) return `Here's a 5-day Sabah plan matched to nature, islands and local culture 🌴<br>${dayCard('Day 1','kk_city','Kota Kinabalu','City, waterfront & seafood','dest:kk')}${dayCard('Day 2','manukan','Pulau Manukan','Snorkelling, beach & island air','dest:manukan')}${dayCard('Day 3','kinabalu_park','Kinabalu Park','Nature trails & cool mountain air','dest:kinabalu')}${dayCard('Day 4','kundasang2','Kundasang','Farms & mountain views','dest:kundasang')}${dayCard('Day 5','marimari','Mari-Mari Cultural Village','Culture, tradition & local food','dest:marimari')}<div class="row" style="gap:6px;margin-top:10px"><button class="btn btn-primary btn-sm" style="flex:1" onclick="S.tripSeg='itin';tab('trips');toast('Plan saved to My Trip','cal')">Save to My Trip</button><button class="btn btn-soft btn-sm" onclick="stellaSend('Make it cheaper')">Cheaper</button></div>`;
   if(has('cheap','budget','jimat')) return `Budget version saves about <b>RM 640</b>: swap the resort for <b>Homestay Kg. Mesilou</b> (RM 120/night), use the Airport Express Bus (RM 5) and claim your <b>10% OFF Attractions</b> coupon.${dayCard('Stay','tourists','Homestay Kg. Mesilou','RM 120 / night · local hosts','booking:s_homestay')}`;
   if(has('eat','food','makan','restaurant','hungry','sedap')) return `You can't leave without trying these 🍤${dayCard('Must try','seafood','Butter prawns at Fatt Kee','Kopitiam · ~RM35/pax · 10% off with Pass','booking:f_fattkee')}${dayCard('Local','crafts','Hinava (raw fish salad)','Kadazan classic · Mari-Mari','booking:f_hinava')}${dayCard('Night','market1','Filipino Market grill','Pay by QR · from RM25','booking:f_seafood')}`;
   if(has('stay','hotel','penginapan','sleep','transport','ferry','car')) return `Top picks for your dates:${dayCard('Beach','resort23','Shangri-La Tanjung Aru','RM 780/night · RM120 cashback','booking:s_shangri')}${dayCard('Over water','bg_resort','Mabul Water Bungalows','RM 1,150/night · Semporna','booking:s_mabul')}${dayCard('Getting around','boat','Jesselton Point Ferry','Return RM 45','booking:v_ferry')}`;
@@ -911,19 +911,19 @@ function sitiReply(q){
   const d = DEST.find(x=>s.includes(x.name.toLowerCase()) || s.includes(x.id));
   if(d) return `<b>${d.name}</b> — ${d.desc}<br><br>Best time: <b>${d.best}</b>. Ideal for ${d.ideal.toLowerCase()}.${dayCard('Explore',d.thumb,d.name,d.tag,'dest:'+d.id)}`;
   if(has('destin','where','tempat','recommend','go')) return `Based on travellers like you, I'd start with these:${dayCard('Islands','t_semporna','Semporna','Island paradise','dest:semporna')}${dayCard('Nature','t_kinabalu','Mount Kinabalu','Nature & adventure','dest:kinabalu')}${dayCard('Wildlife','t_kinabatangan','Kinabatangan','Pygmy elephants & orangutans','dest:kinabatangan')}`;
-  return `I can help with that! Try asking me to plan your days, find food, book activities, check the weather or translate.<div class="qchips" style="margin-top:8px"><button onclick="sitiSend('Plan a 5-day trip in Sabah')">Plan 5 days</button><button onclick="sitiSend('What should I eat')">Food</button><button onclick="sitiSend('Weather today')">Weather</button></div>`;
+  return `I can help with that! Try asking me to plan your days, find food, book activities, check the weather or translate.<div class="qchips" style="margin-top:8px"><button onclick="stellaSend('Plan a 5-day trip in Sabah')">Plan 5 days</button><button onclick="stellaSend('What should I eat')">Food</button><button onclick="stellaSend('Weather today')">Weather</button></div>`;
 }
-function sitiSend(text){
+function stellaSend(text){
   text=(text||'').trim(); if(!text) return;
-  if(topScr().n!=='siti') return go('siti',{prompt:text});
+  if(topScr().n!=='stella') return go('stella',{prompt:text});
   S.chat.push({from:'me', html:text.replace(/</g,'&lt;')});
   refresh(); const ci=$('#ci'); if(ci) ci.value='';
-  const chat=$('#chat'); chat.insertAdjacentHTML('beforeend', `<div class="botrow" id="typing"><img src="img/siti.jpg" alt=""><div class="msg bot typing"><i></i><i></i><i></i></div></div>`);
+  const chat=$('#chat'); chat.insertAdjacentHTML('beforeend', `<div class="botrow" id="typing"><img src="img/stella.jpg" alt=""><div class="msg bot typing"><i></i><i></i><i></i></div></div>`);
   scrollChat();
-  setTimeout(()=>{ S.chat.push({from:'bot', html:sitiReply(text)}); if(topScr().n==='siti'){ refresh(); scrollChat(); } }, 900);
+  setTimeout(()=>{ S.chat.push({from:'bot', html:stellaReply(text)}); if(topScr().n==='stella'){ refresh(); scrollChat(); } }, 900);
 }
 function scrollChat(){ const c=$('#chatScroll'); if(c) c.scrollTo({top:c.scrollHeight, behavior:'smooth'}); }
-function sitiMic(){ const m=$('#mic'); m.classList.add('on'); $('#ci').placeholder='Listening…'; setTimeout(()=>{ m.classList.remove('on'); sitiSend('Plan a 5-day trip in Sabah'); },1500); }
+function stellaMic(){ const m=$('#mic'); m.classList.add('on'); $('#ci').placeholder='Listening…'; setTimeout(()=>{ m.classList.remove('on'); stellaSend('Plan a 5-day trip in Sabah'); },1500); }
 
 /* ---------- Profile ---------- */
 SCREENS.profile = () => {
@@ -1021,7 +1021,7 @@ const SIDE = [
   ['Home',()=>toHome()],['Destinations',()=>{toHome();go('explore')}],['Semporna',()=>{toHome();S.dTab='overview';go('dest','semporna')}],
   ['TEC payment',()=>{S.mdac=true;toHome();go('tec')}],['Digital Pass',()=>{if(!S.pass){S.mdac=true;S.pass={id:'SB-2611-482105',until:'12 Dec 2026',issued:now(),route:'Air',travellers:1};}toHome();go('pass')}],
   ['Booking',()=>{toHome();go('booking','a_island')}],['My Trip',()=>{S.loggedIn=true;tab('trips')}],['Wallet',()=>{S.loggedIn=true;tab('wallet')}],['Scan & Pay',()=>{tab('wallet');go('scan')}],
-  ['Rewards',()=>{S.loggedIn=true;tab('rewards')}],['SITI AI',()=>{toHome();go('siti')}],['Help 24/7',()=>{toHome();go('help')}],['Festivals',()=>{toHome();go('events')}],
+  ['Rewards',()=>{S.loggedIn=true;tab('rewards')}],['Stella AI',()=>{toHome();go('stella')}],['Help 24/7',()=>{toHome();go('help')}],['Festivals',()=>{toHome();go('events')}],
   ['Profile',()=>{S.loggedIn=true;tab('profile')}],['Post-trip',()=>{tab('profile');go('postTrip')}],['Merchant app',()=>tab('mhome')],
 ];
 function markSide(){}
