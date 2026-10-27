@@ -1,4 +1,4 @@
-# Sabah GO — mobile app prototype
+# Sabah GO: mobile app prototype
 
 Interactive prototype of the Sabah GO tourism app, built as a static site (plain HTML, CSS and JavaScript, no build step).
 
@@ -18,9 +18,9 @@ When you change `styles.css`, `app.js` or `data.js`, bump the `?v=` number on th
 
 ## Files
 
-- `index.html` — page shell and phone frame
-- `app.js` — screens, routing and interactions
-- `data.js` — destinations, events, deals and translations
-- `styles.css` — all styles
-- `img/` — photos, logos and payment-method icons
-- `a11y-audit.js` — dev-only accessibility check; load it in the browser console and run `a11yAudit()` (not deployed)
+- `index.html`: page shell and phone frame
+- `app.js`: screens, routing and interactions
+- `data.js`: destinations, events, deals and translations
+- `styles.css`: all styles
+- `img/`: photos, logos and payment-method icons
+- `a11y-audit.js`: dev-only accessibility check; load it in the browser console and run `a11yAudit()` (not deployed)

@@ -815,3 +815,19 @@ button.card[onclick*="999"]{background:#B8183F!important}
 .stella-hero .tag i{flex-shrink:0;margin-top:4px}
 /* headings get programmatic focus on screen change for screen readers; they are not controls, so no focus ring */
 h1[tabindex="-1"]:focus,h1[tabindex="-1"]:focus-visible{outline:none}
+/* TEC impact card: where the contribution goes */
+.impact{margin-top:4px;border-radius:20px;overflow:hidden;background:#fff;box-shadow:var(--shadow);border:1px solid #D7EFE3}
+.impact-top{display:flex;gap:12px;align-items:flex-start;padding:16px 16px 14px;background:linear-gradient(135deg,#E6F7EE 0%,#E3F2FF 100%)}
+.impact-ico{width:40px;height:40px;border-radius:12px;background:#08724D;color:#fff;display:grid;place-items:center;flex-shrink:0}
+.impact-ico svg{width:21px;height:21px}
+.impact h2{font-size:16px;font-weight:700;color:var(--ink);line-height:1.3}
+.impact-top p{font-size:12.5px;color:var(--ink2);line-height:1.5;margin-top:3px}
+.impact-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px}
+.impact-it{display:flex;flex-direction:column;gap:2px;padding:12px;border-radius:14px;background:var(--bg)}
+.impact-it span{width:32px;height:32px;border-radius:10px;background:#fff;color:#08724D;display:grid;place-items:center;margin-bottom:6px;box-shadow:0 2px 6px rgba(16,56,140,.06)}
+.impact-it span svg{width:18px;height:18px}
+.impact-it b{font-size:13px;font-weight:600;color:var(--ink)}
+.impact-it small{font-size:12px;color:var(--ink3);line-height:1.35}
+.impact-foot{display:flex;gap:8px;align-items:center;padding:0 16px 14px;font-size:12.5px;color:var(--ink2)}
+.impact-foot svg{width:16px;height:16px;color:#08724D;flex-shrink:0}
+.impact-foot b{color:#08724D}

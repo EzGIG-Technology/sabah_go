@@ -1,4 +1,4 @@
-/* Sabah GO — sample content (replace with live APIs) */
+/* Sabah GO: sample content (replace with live APIs) */
 const DEST = [
   { id:'semporna', name:'Semporna', tag:'Island Paradise', cat:['island','adventure'], img:'semporna_hero', thumb:'t_semporna', gallery:'semporna_overview', rating:4.9, reviews:2841, loc:'Semporna, Tawau Division', best:'Mar – Oct', ideal:'Couples, families, divers',
     desc:'Semporna is the gateway to some of the most beautiful islands in the world, with crystal clear waters, vibrant marine life and the living culture of the Bajau Laut sea nomads.',
@@ -37,7 +37,7 @@ const DEST = [
     attractions:[['Manukan Beach','Snorkel & swim','beach'],['Sapi Island','Coral Flyer zipline','island']],
     acts:['a_island'], food:['f_seafood'], stay:['s_shangri'] },
   { id:'marimari', name:'Mari-Mari Village', tag:'Culture & Tradition', cat:['culture'], img:'marimari', thumb:'marimari', gallery:'dancers', rating:4.8, reviews:1430, loc:'Inanam, Kota Kinabalu', best:'All year', ideal:'Culture lovers, families',
-    desc:'A living museum of five ethnic groups of Sabah — Kadazandusun, Rungus, Lundayeh, Bajau and Murut — with traditional houses, food, blowpipes and dance.',
+    desc:'A living museum of five ethnic groups of Sabah (Kadazandusun, Rungus, Lundayeh, Bajau and Murut), with traditional houses, food, blowpipes and dance.',
     attractions:[['Traditional houses','Five ethnic architectures','marimari'],['Sumazau dance','Cultural performance','dancers']],
     acts:['a_culture'], food:['f_hinava'], stay:['s_homestay'] },
 ];
