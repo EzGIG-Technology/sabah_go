@@ -1,16 +1,16 @@
 /* Sabah GO: sample content (replace with live APIs) */
 const DEST = [
-  { id:'semporna', name:'Semporna', tag:'Island Paradise', cat:['island','adventure'], img:'semporna_hero', thumb:'t_semporna', gallery:'semporna_overview', rating:4.9, reviews:2841, loc:'Semporna, Tawau Division', best:'Mar – Oct', ideal:'Couples, families, divers',
+  { id:'semporna', name:'Semporna', tag:'Island Paradise', cat:['island','adventure'], img:'console/dest-semporna', thumb:'t_semporna', gallery:'semporna_overview', rating:4.9, reviews:2841, loc:'Semporna, Tawau Division', best:'Mar – Oct', ideal:'Couples, families, divers',
     desc:'Semporna is the gateway to some of the most beautiful islands in the world, with crystal clear waters, vibrant marine life and the living culture of the Bajau Laut sea nomads.',
-    attractions:[['Mabul Island','Muck diving & water villas','islands'],['Bohey Dulang','Iconic viewpoint hike','island'],['Kapalai','Resort on stilts over a sandbar','resort23'],['Regatta Lepa','Bajau boat festival (April)','boat']],
+    attractions:[['Mabul Island','Muck diving & water villas','islands'],['Bohey Dulang','Iconic viewpoint hike','island'],['Kapalai','Resort on stilts over a sandbar','resort23'],['Regatta Lepa','Bajau boat festival (April)','console/event-regatta-lepa']],
     acts:['a_island','a_sipadan','a_sunset'], food:['f_seafood','f_hinava'], stay:['s_mabul','s_kapalai'] },
-  { id:'kinabalu', name:'Mount Kinabalu', tag:'Nature & Adventure', cat:['nature','adventure'], img:'kinabalu_park', thumb:'t_kinabalu', gallery:'kinabalu_eco', rating:4.9, reviews:5120, loc:'Kinabalu Park, Ranau', best:'Mar – Aug', ideal:'Hikers, nature lovers',
+  { id:'kinabalu', name:'Mount Kinabalu', tag:'Nature & Adventure', cat:['nature','adventure'], img:'console/dest-kinabalu-park', thumb:'t_kinabalu', gallery:'kinabalu_eco', rating:4.9, reviews:5120, loc:'Kinabalu Park, Ranau', best:'Mar – Aug', ideal:'Hikers, nature lovers',
     desc:'At 4,095 m, Mount Kinabalu is the highest peak in Malaysia and a UNESCO World Heritage Site, home to more than 5,000 plant species including the Rafflesia and pitcher plants.',
-    attractions:[['Kinabalu Park HQ','Botanical garden & trails','kinabalu_park'],['Poring Hot Springs','Canopy walk & sulphur baths','rec_waterfall'],['Low\'s Peak','Summit sunrise at 4,095 m','t_kinabalu']],
+    attractions:[['Kinabalu Park HQ','Botanical garden & trails','console/dest-kinabalu-park'],['Poring Hot Springs','Canopy walk & sulphur baths','rec_waterfall'],['Low\'s Peak','Summit sunrise at 4,095 m','t_kinabalu']],
     acts:['a_climb','a_kundasang'], food:['f_tuaran'], stay:['s_pine','s_homestay'] },
-  { id:'sipadan', name:'Sipadan', tag:'World Class Diving', cat:['island','adventure'], img:'rec_diving', thumb:'t_sipadan', gallery:'t_sipadan', rating:5.0, reviews:1932, loc:'Celebes Sea, off Semporna', best:'Apr – Dec', ideal:'Certified divers',
+  { id:'sipadan', name:'Sipadan', tag:'World Class Diving', cat:['island','adventure'], img:'console/dest-sipadan', thumb:'t_sipadan', gallery:'t_sipadan', rating:5.0, reviews:1932, loc:'Celebes Sea, off Semporna', best:'Apr – Dec', ideal:'Certified divers',
     desc:'Sipadan rises 600 m from the seabed and is rated among the top dive sites on earth: turtle tombs, barracuda tornadoes and reef sharks. Daily permits are limited to 176 divers.',
-    attractions:[['Barracuda Point','Schooling barracuda & jacks','rec_diving'],['Turtle Tomb','Cave system under the island','t_sipadan'],['Drop Off','Wall dive from the jetty','boat']],
+    attractions:[['Barracuda Point','Schooling barracuda & jacks','console/dest-sipadan'],['Turtle Tomb','Cave system under the island','t_sipadan'],['Drop Off','Wall dive from the jetty','boat']],
     acts:['a_sipadan','a_island'], food:['f_seafood'], stay:['s_kapalai','s_mabul'] },
   { id:'kundasang', name:'Kundasang', tag:'Cool Highland Escape', cat:['nature'], img:'kundasang2', thumb:'t_kundasang', gallery:'t_kundasang', rating:4.7, reviews:1610, loc:'Ranau District', best:'All year', ideal:'Families, photographers',
     desc:'Known as the "New Zealand of Sabah", Kundasang sits at 1,900 m with dairy farms, vegetable markets and the best sunrise view of Mount Kinabalu.',
@@ -20,70 +20,70 @@ const DEST = [
     desc:'Tawau is the gateway to Semporna and home to Tawau Hills Park, the world\'s tallest tropical tree and Sabah\'s cocoa heritage.',
     attractions:[['Tawau Hills Park','Hot springs & waterfalls','rec_waterfall'],['Cocoa Heritage','Bean-to-bar tastings','crafts']],
     acts:['a_danum'], food:['f_seafood'], stay:['s_homestay'] },
-  { id:'kinabatangan', name:'Kinabatangan', tag:'Wildlife & River Safari', cat:['nature','wildlife'], img:'t_kinabatangan', thumb:'t_kinabatangan', gallery:'rec_orangutan', rating:4.8, reviews:2205, loc:'Sukau, Sandakan Division', best:'Mar – Oct', ideal:'Wildlife lovers',
+  { id:'kinabatangan', name:'Kinabatangan', tag:'Wildlife & River Safari', cat:['nature','wildlife'], img:'console/dest-kinabatangan', thumb:'t_kinabatangan', gallery:'rec_orangutan', rating:4.8, reviews:2205, loc:'Sukau, Sandakan Division', best:'Mar – Oct', ideal:'Wildlife lovers',
     desc:'Malaysia\'s second longest river is lined with forest full of proboscis monkeys, pygmy elephants, orangutans and eight species of hornbill.',
-    attractions:[['Sukau','Dawn & dusk river cruises','t_kinabatangan'],['Gomantong Caves','Swiftlet nest harvesting','t_danum'],['Sepilok','Orangutan rehabilitation','rec_orangutan']],
+    attractions:[['Sukau','Dawn & dusk river cruises','console/dest-kinabatangan'],['Gomantong Caves','Swiftlet nest harvesting','t_danum'],['Sepilok','Orangutan rehabilitation','console/dest-sepilok']],
     acts:['a_river'], food:['f_hinava'], stay:['s_sukau'] },
-  { id:'danum', name:'Danum Valley', tag:'Ancient Rainforest', cat:['nature','wildlife','adventure'], img:'t_danum', thumb:'t_danum', gallery:'rec_waterfall', rating:4.8, reviews:870, loc:'Lahad Datu', best:'Mar – Sep', ideal:'Adventurers, researchers',
+  { id:'danum', name:'Danum Valley', tag:'Ancient Rainforest', cat:['nature','wildlife','adventure'], img:'console/dest-danum-valley', thumb:'t_danum', gallery:'rec_waterfall', rating:4.8, reviews:870, loc:'Lahad Datu', best:'Mar – Sep', ideal:'Adventurers, researchers',
     desc:'130 million years old and older than the Amazon, Danum Valley is one of the last pristine lowland rainforests on earth.',
-    attractions:[['Canopy Walkway','27 m above the forest floor','t_danum'],['Coffin Cliff','Ancient Kadazan burial site','rec_waterfall']],
+    attractions:[['Canopy Walkway','27 m above the forest floor','console/dest-danum-valley'],['Coffin Cliff','Ancient Kadazan burial site','rec_waterfall']],
     acts:['a_danum'], food:[], stay:['s_sukau'] },
-  { id:'kk', name:'Kota Kinabalu', tag:'City, Food & Sunsets', cat:['culture'], img:'kk_city', thumb:'kk_city', gallery:'city', rating:4.6, reviews:3820, loc:'West Coast Division', best:'All year', ideal:'Everyone',
+  { id:'kk', name:'Kota Kinabalu', tag:'City, Food & Sunsets', cat:['culture'], img:'console/dest-kota-kinabalu', thumb:'kk_city', gallery:'city', rating:4.6, reviews:3820, loc:'West Coast Division', best:'All year', ideal:'Everyone',
     desc:'Sabah\'s capital is a waterfront city of night markets, seafood, island hopping and some of the best sunsets in Southeast Asia.',
-    attractions:[['Gaya Street Sunday Market','Crafts, food & plants','market2'],['Signal Hill','City view at sunset','city'],['KK Waterfront','Bars & seafood','jetty_sunset'],['Filipino Market','Grilled seafood at night','seafood']],
+    attractions:[['Gaya Street Sunday Market','Crafts, food & plants','console/merchant-tamu'],['Signal Hill','City view at sunset','city'],['KK Waterfront','Bars & seafood','jetty_sunset'],['Filipino Market','Grilled seafood at night','console/category-food']],
     acts:['a_food','a_sunset','a_island'], food:['f_fattkee','f_welcome','f_seafood'], stay:['s_shangri','s_homestay'] },
-  { id:'manukan', name:'Pulau Manukan', tag:'Snorkelling & Beaches', cat:['island'], img:'manukan', thumb:'manukan', gallery:'beach', rating:4.6, reviews:2950, loc:'Tunku Abdul Rahman Park', best:'Mar – Oct', ideal:'Families, first-timers',
+  { id:'manukan', name:'Pulau Manukan', tag:'Snorkelling & Beaches', cat:['island'], img:'console/dest-tar-park', thumb:'manukan', gallery:'beach', rating:4.6, reviews:2950, loc:'Tunku Abdul Rahman Park', best:'Mar – Oct', ideal:'Families, first-timers',
     desc:'Twenty minutes by boat from Jesselton Point, Manukan has white sand, clear water and easy snorkelling right off the beach.',
-    attractions:[['Manukan Beach','Snorkel & swim','beach'],['Sapi Island','Coral Flyer zipline','island']],
+    attractions:[['Manukan Beach','Snorkel & swim','console/dest-tar-park'],['Sapi Island','Coral Flyer zipline','island']],
     acts:['a_island'], food:['f_seafood'], stay:['s_shangri'] },
-  { id:'marimari', name:'Mari-Mari Village', tag:'Culture & Tradition', cat:['culture'], img:'marimari', thumb:'marimari', gallery:'dancers', rating:4.8, reviews:1430, loc:'Inanam, Kota Kinabalu', best:'All year', ideal:'Culture lovers, families',
+  { id:'marimari', name:'Mari-Mari Village', tag:'Culture & Tradition', cat:['culture'], img:'console/dest-mari-mari', thumb:'marimari', gallery:'dancers', rating:4.8, reviews:1430, loc:'Inanam, Kota Kinabalu', best:'All year', ideal:'Culture lovers, families',
     desc:'A living museum of five ethnic groups of Sabah (Kadazandusun, Rungus, Lundayeh, Bajau and Murut), with traditional houses, food, blowpipes and dance.',
-    attractions:[['Traditional houses','Five ethnic architectures','marimari'],['Sumazau dance','Cultural performance','dancers']],
+    attractions:[['Traditional houses','Five ethnic architectures','console/dest-mari-mari'],['Sumazau dance','Cultural performance','console/portal-tourism']],
     acts:['a_culture'], food:['f_hinava'], stay:['s_homestay'] },
 ];
 
 const ITEMS = {
   /* activities */
-  a_island:{type:'act',name:'Semporna Island Hopping',sub:'Bohey Dulang, Mantabuan & Sibuan · 8 hrs',price:180,old:220,img:'islands',rating:4.9,dest:'semporna',incl:['Speedboat & guide','Snorkel gear','Seafood lunch','Marine park fees']},
-  a_sipadan:{type:'act',name:'Sipadan Dive Day Trip',sub:'3 boat dives · permit included',price:450,img:'rec_diving',rating:5.0,dest:'sipadan',incl:['Sipadan permit','3 guided dives','Lunch on Mabul','Equipment rental']},
+  a_island:{type:'act',name:'Semporna Island Hopping',sub:'Bohey Dulang, Mantabuan & Sibuan · 8 hrs',price:180,old:220,img:'console/category-tours',rating:4.9,dest:'semporna',incl:['Speedboat & guide','Snorkel gear','Seafood lunch','Marine park fees']},
+  a_sipadan:{type:'act',name:'Sipadan Dive Day Trip',sub:'3 boat dives · permit included',price:450,img:'console/dest-sipadan',rating:5.0,dest:'sipadan',incl:['Sipadan permit','3 guided dives','Lunch on Mabul','Equipment rental']},
   a_sunset:{type:'act',name:'Sunset Cruise KK',sub:'2 hrs · dinner on deck',price:150,old:180,img:'jetty_sunset',rating:4.7,dest:'kk',incl:['Hotel pickup','Buffet dinner','Live music']},
-  a_climb:{type:'act',name:'Mount Kinabalu Climb 2D1N',sub:'Summit at sunrise · licensed guide',price:1350,img:'t_kinabalu',rating:4.9,dest:'kinabalu',incl:['Climbing permit','Mountain guide','Laban Rata dorm','All meals']},
+  a_climb:{type:'act',name:'Mount Kinabalu Climb 2D1N',sub:'Summit at sunrise · licensed guide',price:1350,img:'console/dest-kinabalu-summit',rating:4.9,dest:'kinabalu',incl:['Climbing permit','Mountain guide','Laban Rata dorm','All meals']},
   a_kundasang:{type:'act',name:'Kundasang Highland Tour',sub:'Desa Dairy Farm & markets · 9 hrs',price:160,img:'t_kundasang',rating:4.7,dest:'kundasang',incl:['Transport from KK','Farm entry','Lunch']},
-  a_river:{type:'act',name:'Kinabatangan River Safari',sub:'Dusk cruise · proboscis monkeys',price:220,old:260,img:'t_kinabatangan',rating:4.8,dest:'kinabatangan',incl:['Boat & ranger','Night walk','Dinner']},
-  a_danum:{type:'act',name:'Danum Valley Canopy Walk',sub:'Guided rainforest day · 6 hrs',price:320,img:'t_danum',rating:4.8,dest:'danum',incl:['Conservation fee','Guide','Packed lunch']},
-  a_food:{type:'act',name:'KK Night Food Tour',sub:'8 tastings · local host',price:120,img:'seafood',rating:4.8,dest:'kk',incl:['8 tastings','Local host','Drinks']},
-  a_culture:{type:'act',name:'Mari-Mari Cultural Tour',sub:'Half day · lunch & dance show',price:190,img:'marimari',rating:4.8,dest:'marimari',incl:['Transfer','Guided tour','Lunch','Performance']},
+  a_river:{type:'act',name:'Kinabatangan River Safari',sub:'Dusk cruise · proboscis monkeys',price:220,old:260,img:'console/dest-kinabatangan',rating:4.8,dest:'kinabatangan',incl:['Boat & ranger','Night walk','Dinner']},
+  a_danum:{type:'act',name:'Danum Valley Canopy Walk',sub:'Guided rainforest day · 6 hrs',price:320,img:'console/dest-danum-valley',rating:4.8,dest:'danum',incl:['Conservation fee','Guide','Packed lunch']},
+  a_food:{type:'act',name:'KK Night Food Tour',sub:'8 tastings · local host',price:120,img:'console/category-food',rating:4.8,dest:'kk',incl:['8 tastings','Local host','Drinks']},
+  a_culture:{type:'act',name:'Mari-Mari Cultural Tour',sub:'Half day · lunch & dance show',price:190,img:'console/dest-mari-mari',rating:4.8,dest:'marimari',incl:['Transfer','Guided tour','Lunch','Performance']},
   /* food */
   f_fattkee:{type:'food',name:'Kedai Kopi Fatt Kee',sub:'Kopitiam · Butter prawns, sweet & sour',price:35,img:'seafood',rating:4.6,dest:'kk',deal:'10% off with Pass'},
   f_welcome:{type:'food',name:'Welcome Seafood Restaurant',sub:'Live seafood · Tiger prawns, crab',price:80,img:'seafood',rating:4.5,dest:'kk',deal:'Free drink'},
-  f_seafood:{type:'food',name:'Filipino Market Grill',sub:'Night market · Grilled fish & squid',price:25,img:'market1',rating:4.4,dest:'kk',deal:'Pay by QR'},
-  f_hinava:{type:'food',name:'Hinava & Kadazan Kitchen',sub:'Traditional · Hinava, tuhau, bambangan',price:30,img:'crafts',rating:4.7,dest:'marimari',deal:'Cultural pick'},
+  f_seafood:{type:'food',name:'Filipino Market Grill',sub:'Night market · Grilled fish & squid',price:25,img:'console/category-food',rating:4.4,dest:'kk',deal:'Pay by QR'},
+  f_hinava:{type:'food',name:'Hinava & Kadazan Kitchen',sub:'Traditional · Hinava, tuhau, bambangan',price:30,img:'console/product-hinava',rating:4.7,dest:'marimari',deal:'Cultural pick'},
   f_tuaran:{type:'food',name:'Tuaran Mee House',sub:'Local noodles · Ranau & Kundasang',price:15,img:'market2',rating:4.5,dest:'kundasang'},
   /* stay */
   s_shangri:{type:'stay',name:'Shangri-La Tanjung Aru',sub:'5★ beach resort · Kota Kinabalu',price:780,old:920,img:'resort23',rating:4.8,dest:'kk'},
-  s_mabul:{type:'stay',name:'Mabul Water Bungalows',sub:'Overwater villa · Semporna',price:1150,img:'bg_resort',rating:4.9,dest:'semporna'},
+  s_mabul:{type:'stay',name:'Mabul Water Bungalows',sub:'Overwater villa · Semporna',price:1150,img:'console/category-stays',rating:4.9,dest:'semporna'},
   s_kapalai:{type:'stay',name:'Sipadan Kapalai Resort',sub:'Stilt resort on a sandbar',price:980,img:'villas',rating:4.7,dest:'sipadan'},
   s_pine:{type:'stay',name:'Kinabalu Pine Resort',sub:'Mountain-view lodge · Kundasang',price:320,img:'kundasang2',rating:4.5,dest:'kundasang'},
   s_sukau:{type:'stay',name:'Sukau Rainforest Lodge',sub:'Eco lodge · Kinabatangan',price:640,img:'t_danum',rating:4.8,dest:'kinabatangan'},
   s_homestay:{type:'stay',name:'Homestay Kg. Mesilou',sub:'Village homestay · local hosts',price:120,img:'tourists',rating:4.7,dest:'kundasang'},
   /* shopping */
-  p_gaya:{type:'shop',name:'Gaya Street Sunday Market',sub:'Sundays 6am–1pm · Crafts & plants',price:0,img:'market2',rating:4.6,dest:'kk'},
-  p_handicraft:{type:'shop',name:'KK Handicraft Market',sub:'Pearls, batik & souvenirs',price:0,img:'crafts',rating:4.4,dest:'kk'},
+  p_gaya:{type:'shop',name:'Gaya Street Sunday Market',sub:'Sundays 6am–1pm · Crafts & plants',price:0,img:'console/merchant-tamu',rating:4.6,dest:'kk'},
+  p_handicraft:{type:'shop',name:'KK Handicraft Market',sub:'Pearls, batik & souvenirs',price:0,img:'console/category-crafts',rating:4.4,dest:'kk'},
   p_vege:{type:'shop',name:'Kundasang Vegetable Market',sub:'Highland produce & snacks',price:0,img:'t_kundasang',rating:4.5,dest:'kundasang'},
   /* services */
   v_esim:{type:'svc',name:'Sabah GO eSIM',sub:'15 days · 30 GB · 5G',price:45,img:'city',rating:4.7},
-  v_ferry:{type:'svc',name:'Jesselton Point Ferry',sub:'Return to Manukan / Sapi',price:45,img:'boat',rating:4.5},
+  v_ferry:{type:'svc',name:'Jesselton Point Ferry',sub:'Return to Manukan / Sapi',price:45,img:'console/category-transport',rating:4.5},
   v_car:{type:'svc',name:'Car Rental · Perodua Bezza',sub:'Per day · insurance included',price:130,img:'bus',rating:4.4},
   v_bus:{type:'svc',name:'Airport Express Bus',sub:'KKIA ↔ City Centre',price:5,img:'bus',rating:4.3},
   v_medical:{type:'svc',name:'Executive Health Screening',sub:'Gleneagles KK · Medical tourism',price:890,img:'medical',rating:4.8},
 };
 
 const EVENTS = [
-  {id:'kaamatan',name:'Pesta Kaamatan',sub:'Harvest Festival · KDCA, Penampang',d:'30',m:'May',img:'dancers',desc:'Sabah\'s biggest celebration: the Unduk Ngadau pageant, sumazau dancing, tapai rice wine and the thanksgiving to Bambarayon, the rice spirit.'},
-  {id:'regatta',name:'Regatta Lepa',sub:'Semporna waterfront',d:'25',m:'Apr',img:'boat',desc:'Bajau Laut families sail their colourful lepa boats in a parade of sails, music and traditional dance.'},
-  {id:'birds',name:'Borneo Bird Festival',sub:'Rainforest Discovery Centre, Sepilok',d:'08',m:'Nov',img:'rec_orangutan',desc:'Guided bird walks, photography workshops and conservation talks in the Sepilok forest.'},
-  {id:'jazz',name:'KK Jazz Festival',sub:'Waterfront, Kota Kinabalu',d:'14',m:'Nov',img:'jetty_sunset',desc:'Two nights of jazz by the sea with local and international acts.'},
-  {id:'sabahfest',name:'Sabah Fest',sub:'Kota Kinabalu city',d:'20',m:'Dec',img:'culture4',desc:'A week-long showcase of Sabah\'s 30+ ethnic groups: music, food, crafts and costume.'},
+  {id:'kaamatan',name:'Pesta Kaamatan',sub:'Harvest Festival · KDCA, Penampang',d:'30',m:'May',img:'console/event-kaamatan',desc:'Sabah\'s biggest celebration: the Unduk Ngadau pageant, sumazau dancing, tapai rice wine and the thanksgiving to Bambarayon, the rice spirit.'},
+  {id:'regatta',name:'Regatta Lepa',sub:'Semporna waterfront',d:'25',m:'Apr',img:'console/event-regatta-lepa',desc:'Bajau Laut families sail their colourful lepa boats in a parade of sails, music and traditional dance.'},
+  {id:'birds',name:'Borneo Bird Festival',sub:'Rainforest Discovery Centre, Sepilok',d:'08',m:'Nov',img:'console/event-bird-festival',desc:'Guided bird walks, photography workshops and conservation talks in the Sepilok forest.'},
+  {id:'jazz',name:'KK Jazz Festival',sub:'Waterfront, Kota Kinabalu',d:'14',m:'Nov',img:'console/event-kk-jazz',desc:'Two nights of jazz by the sea with local and international acts.'},
+  {id:'sabahfest',name:'Sabah Fest',sub:'Kota Kinabalu city',d:'20',m:'Dec',img:'console/event-sabah-fest',desc:'A week-long showcase of Sabah\'s 30+ ethnic groups: music, food, crafts and costume.'},
 ];
 
 const DEALS = [
@@ -107,7 +107,7 @@ const RAILS = [
 ];
 
 const TEC_FEE = 50; // RM, standard for every visitor aged 13 and over; children 12 and under are exempt
-const TEC_RATES = {air:{n:'Air',ms:'Udara',p:TEC_FEE,img:'airport_sunset'},land:{n:'Land',ms:'Darat',p:TEC_FEE,img:'bus'},sea:{n:'Sea / Ferry',ms:'Laut / Feri',p:TEC_FEE,img:'boat'},cruise:{n:'Cruise',ms:'Kapal Persiaran',p:TEC_FEE,img:'resort23'}};
+const TEC_RATES = {air:{n:'Air',ms:'Udara',p:TEC_FEE,img:'console/checkpoint-airport'},land:{n:'Land',ms:'Darat',p:TEC_FEE,img:'console/checkpoint-land'},sea:{n:'Sea / Ferry',ms:'Laut / Feri',p:TEC_FEE,img:'console/checkpoint-ferry'},cruise:{n:'Cruise',ms:'Kapal Persiaran',p:TEC_FEE,img:'console/checkpoint-cruise'}};
 
 const I18N = {
   en:{home:'Home',trips:'Trips',wallet:'Wallet',rewards:'Rewards',profile:'Profile',welcome:'Welcome to Sabah',discover:'Discover Amazing Sabah',heroSub:'Nature • Culture • Adventure • Local Experience',search:'Search places, food, tours',popular:'Popular Destinations',seeAll:'See All',reco:'Recommended for You',events:'Festivals & Events',deals:'Exclusive Deals',services:'Traveller Services',c_dest:'Destinations',c_act:'Activities',c_food:'Food',c_shop:'Shopping',c_stay:'Stay',c_deal:'Packages & Deals',c_svc:'Services',c_rw:'Rewards',banner:'Explore Sabah More Meaningfully',bannerSub:'Let Stella plan a trip around what you love.',bannerCta:'Plan with Stella'},
