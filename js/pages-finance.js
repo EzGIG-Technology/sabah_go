@@ -40,7 +40,7 @@ overview(){ seedLive();
   </div>`;
 },
 _overview(){ TIMERS.push(setInterval(()=>{ if(!$('#lvFeed')) return; const m=pick([MI.CN,MI.CN,MI.KR,MI.SG,MI.TW,MI.BN,MI.AU,MI.JP]); const paid=1+(rnd()<.35?1:0), ex=rnd()<.18?1:0; const amt=paid*TEC_SEN;
-  LIVE.rows.splice(1,0,{t:HHMM, ch:rnd()<.08?'Web':'App', m, trav:`${paid+ex}${ex?` (${paid} paid, ${ex} exempt)`:''}`, amt, pp:'••••'+ri(1000,9999), fresh:true}); LIVE.rows=LIVE.rows.slice(0,12); LIVE.add+=amt; LIVE.n+=paid;
+  LIVE.rows.splice(1,0,{t:liveHHMM(), ch:rnd()<.08?'Web':'App', m, trav:`${paid+ex}${ex?` (${paid} paid, ${ex} exempt)`:''}`, amt, pp:'••••'+ri(1000,9999), fresh:true}); LIVE.rows=LIVE.rows.slice(0,12); LIVE.add+=amt; LIVE.n+=paid;
   $('#lvFeed').innerHTML=liveTable(); $('#lvCol').textContent=sen(liveCollected()); $('#lvPen').textContent=sen(liveCollected()-liveSettled()); $('#lvN').textContent=fmtN(DAY[LAST].col+LIVE.n); }, 6000)); },
 collections(){
   const k=S.f.cm, d=S.f.cd;

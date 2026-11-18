@@ -834,3 +834,18 @@ h1[tabindex="-1"]:focus,h1[tabindex="-1"]:focus-visible{outline:none}
 .impact-foot{display:flex;gap:8px;align-items:center;padding:0 16px 14px;font-size:12.5px;color:var(--ink2)}
 .impact-foot svg{width:16px;height:16px;color:#08724D;flex-shrink:0}
 .impact-foot b{color:#08724D}
+
+/* ---------- TEC: one price, families ---------- */
+.fee-card{display:flex;gap:14px;align-items:center;margin-top:14px;padding:14px 16px;border-radius:var(--r);background:#fff;box-shadow:var(--shadow)}
+.fee-card>div{flex-shrink:0;width:86px;height:70px;border-radius:16px;background:var(--grad);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.fee-card>div b{font-size:20px;font-weight:800;line-height:1.1}.fee-card>div span{font-size:10.5px;opacity:.85}
+.fee-card p{font-size:12.5px;color:var(--ink2);line-height:1.5}
+.howfam{display:flex;gap:12px;margin-top:12px;padding:14px;border-radius:16px;background:var(--sky);color:var(--navy2)}
+.howfam>svg{width:20px;height:20px;flex-shrink:0;margin-top:2px;color:var(--blue)}
+.howfam b{font-size:13.5px;display:block}.howfam p{font-size:12.5px;color:var(--ink2);line-height:1.5;margin-top:3px}
+.pm-tabs{display:flex;gap:8px;overflow-x:auto;padding:2px 20px 12px;scrollbar-width:none}
+.pm-tabs::-webkit-scrollbar{display:none}
+.pm-tabs button{flex-shrink:0;height:34px;padding:0 14px;border-radius:99px;font-size:13px;font-weight:600;color:#fff;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25)}
+.pm-tabs button.on{background:#fff;color:var(--navy2);border-color:#fff}
+.pass .qr.away{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;background:var(--sky);border-color:var(--sky);color:var(--navy2);padding:16px}
+.pass .qr.away svg{width:34px;height:34px;color:var(--blue)}.pass .qr.away b{font-size:13px}.pass .qr.away small{font-size:11.5px;color:var(--ink2)}

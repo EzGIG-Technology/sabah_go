@@ -157,12 +157,12 @@ function renderPicker(){
   $('#picker').innerHTML = `<header class="lp-top"><div class="lp-photo"><div style="--heroimg:${bg('hero')}"></div></div><div class="lp-scrim"></div>
   <div class="lp">
     <nav class="lp-nav"><span class="lp-logo"><img src="${LOGO.full}" alt="Sabah GO, Your Journey Enriched"><span><b>Sabah GO Console</b><small>Sabah State Government</small></span></span>
-      <span class="meta hide-sm">Operating date ${opDate()}<br>Sample data</span></nav>
+      <span class="meta hide-sm">${fmtD(LAST,{weekday:'short',day:'numeric',month:'short',year:'numeric'})}, <span data-clock>${HHMM}:00</span> ${MYT}<br>Sample data</span></nav>
     <div class="lp-hero"><div><h1>Every ringgit traced.</h1>
       <p>One platform for the Tourist Entry Contribution: the visitor app, collection, and a dashboard for each ministry, hosted in Malaysia.</p>
       <div class="lp-actions"><button class="btn btn-w" onclick="document.getElementById('portals').scrollIntoView({behavior:'smooth'})">${ic('lock')}Sign in to a portal</button><button class="btn btn-glass" onclick="document.getElementById('journey').scrollIntoView({behavior:'smooth'})">Follow the Lin family</button></div></div>
       <div class="lp-stats">
-        <div class="lp-stat"><b>${fmtN(DECK_TOTAL_2025)}</b><span>international visitors in 2025 (Sabah GO deck)</span></div>
+        <div class="lp-stat"><b data-static>${fmtN(DECK_TOTAL_2025)}</b><span>international visitors in 2025 (Sabah GO deck)</span></div>
         <div class="lp-stat"><b>${fmtN(IN_SABAH)}</b><span>pass holders in Sabah now</span></div>
         <div class="lp-stat"><b>${senK(live.gr)}</b><span>TEC collected since go-live</span></div>
         <div class="lp-stat"><b>${rec.variance===0?'100%':'Exception'}</b><span>reconciled yesterday</span></div>
@@ -232,7 +232,7 @@ function renderShell(){
     <div class="grow"><div class="crumb">${R.who}</div><h1>${cur[1]}</h1></div>
     ${showRange?`<div class="seg" role="group" aria-label="Period">${RANGES.map(([k,l])=>`<button class="${S.range===k?'on':''}" onclick="setRange('${k}')">${l}</button>`).join('')}</div>
       <label class="field rsel"><select aria-label="Period" onchange="setRange(this.value)">${RANGES.map(([k,l])=>`<option value="${k}" ${S.range===k?'selected':''}>${l}</option>`).join('')}</select></label>`:''}
-    <div class="simdate"><b>${fmtD(LAST,{weekday:'short',day:'numeric',month:'short',year:'numeric'})}</b>Data to ${HHMM} ${MYT}</div>
+    <div class="simdate"><b>${fmtD(LAST,{weekday:'short',day:'numeric',month:'short',year:'numeric'})}</b><span class="row" style="gap:6px;justify-content:flex-end"><span class="dotlive"></span>Live · <span data-clock>${HHMM}:00</span> ${MYT}</span></div>
     <span class="sample hide-sm">Sample data</span>
     ${['ops','immigration','finance'].includes(S.role)?`<label class="srch">${ic('search')}<input aria-label="Search passes" placeholder="Pass ID or name" onkeydown="if(event.key==='Enter')globalSearch(this.value)"></label>`:''}
     <button class="ibtn" onclick="notifs()" aria-label="Notifications">${ic('bell')}${notifList().length?'<span class="pip"></span>':''}</button>`;

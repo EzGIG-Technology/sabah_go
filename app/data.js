@@ -106,7 +106,8 @@ const RAILS = [
   {g:'Domestic Malaysia', items:[['duitnow','DuitNow QR','All Malaysian banks','pay_duitnow'],['fpx','FPX Online Banking','Maybank, CIMB, Bank Islam…','pay_fpx']]},
 ];
 
-const TEC_RATES = {air:{n:'Air',ms:'Udara',p:75,img:'airport_sunset'},land:{n:'Land',ms:'Darat',p:35,img:'bus'},sea:{n:'Sea / Ferry',ms:'Laut / Feri',p:35,img:'boat'},cruise:{n:'Cruise',ms:'Kapal Persiaran',p:50,img:'resort23'}};
+const TEC_FEE = 50; // RM, standard for every visitor aged 13 and over; children 12 and under are exempt
+const TEC_RATES = {air:{n:'Air',ms:'Udara',p:TEC_FEE,img:'airport_sunset'},land:{n:'Land',ms:'Darat',p:TEC_FEE,img:'bus'},sea:{n:'Sea / Ferry',ms:'Laut / Feri',p:TEC_FEE,img:'boat'},cruise:{n:'Cruise',ms:'Kapal Persiaran',p:TEC_FEE,img:'resort23'}};
 
 const I18N = {
   en:{home:'Home',trips:'Trips',wallet:'Wallet',rewards:'Rewards',profile:'Profile',welcome:'Welcome to Sabah',discover:'Discover Amazing Sabah',heroSub:'Nature • Culture • Adventure • Local Experience',search:'Search places, food, tours',popular:'Popular Destinations',seeAll:'See All',reco:'Recommended for You',events:'Festivals & Events',deals:'Exclusive Deals',services:'Traveller Services',c_dest:'Destinations',c_act:'Activities',c_food:'Food',c_shop:'Shopping',c_stay:'Stay',c_deal:'Packages & Deals',c_svc:'Services',c_rw:'Rewards',banner:'Explore Sabah More Meaningfully',bannerSub:'Let Stella plan a trip around what you love.',bannerCta:'Plan with Stella'},

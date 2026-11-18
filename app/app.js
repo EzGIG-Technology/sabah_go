@@ -5,6 +5,10 @@
 
 /* ---------------- icons (24px stroke) ---------------- */
 const ICONS = {
+  smile:'<circle cx="12" cy="12" r="9"/><path d="M8.5 14.5a4.5 4.5 0 0 0 7 0"/><path d="M9 9.5h.01M15 9.5h.01"/>',
+  link:'<path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.3 1.3"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.3-1.3"/>',
+  chat:'<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.9A8 8 0 1 1 21 12z"/>',
+  mail:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6 8.5-6"/>',
   home:'<path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
   search:'<circle cx="11" cy="11" r="7.5"/><path d="m21 21-4.3-4.3"/>',
   bell:'<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>',
@@ -82,7 +86,7 @@ const fresh = () => ({
   lang:'en', cur:'MYR', loggedIn:false, mdac:false, pass:null,
   user:{name:'Emma Johnson', email:'emma.johnson@mail.com', nat:'United Kingdom', flag:'🇬🇧', passport:'AB1234567', phone:'+44 7700 900123'},
   balance:150, points:2450, favs:['semporna','kinabalu'],
-  tec:{route:'air', date:'2026-11-12', port:'Kota Kinabalu International Airport', sameDay:false, adults:1, teens:0, kids:0},
+  tec:{route:'air', date:'2026-11-12', port:'Kota Kinabalu International Airport', who:'me', group:[]}, passIdx:0,
   txns:[
     {id:'t3', t:'Jesselton Point Ferry', s:'Return ticket · Manukan', amt:-21.5, d:'20 Oct, 16:40', m:'Sabah GO Wallet', ic:'ship'},
     {id:'t2', t:'Kedai Kopi Fatt Kee', s:'Merchant QR payment', amt:-28.5, d:'20 Oct, 13:12', m:'Sabah GO Wallet', ic:'food'},
@@ -106,6 +110,7 @@ let S = fresh();
 /* ---------------- helpers ---------------- */
 const $ = s => document.querySelector(s);
 const fmt = n => Number(n).toLocaleString('en-MY',{minimumFractionDigits:2, maximumFractionDigits:2});
+const esc = t => String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const rm = n => 'RM ' + fmt(n);
 const t = k => (I18N[S.lang]||I18N.en)[k] || I18N.en[k] || k;
 const img = n => `/img/${n}.jpg`;
@@ -522,15 +527,22 @@ function reserveTable(id){
   loading('Reserving your table…',1000,()=>{ S.bookings.unshift({id:'b'+Date.now(), item:id, name:v.name, sub:`Table for ${b.adults+b.kids} · ${['12:30','18:30','19:30','20:30'][b.time]}`, date:BK_DATES[b.date]+' 2026', amt:0, ref:ref('SG-RS'), status:'Reserved'}); S.tripSeg='book'; tab('trips'); toast('Table reserved','cal'); });
 }
 
-/* ---------- Tourist Entry Contribution ---------- */
+/* ---------- Tourist Entry Contribution ----------
+   One standard price: RM 50 for every visitor aged 13 and over, by air, sea,
+   land or cruise. Children 12 and under are exempt but still get a pass,
+   because every traveller is scanned at entry.
+   Families: one person can pay for everyone and share each pass (PDF, Wallet,
+   or send it to the traveller's own Sabah GO app), or each adult can pay for
+   themselves in their own app. */
+const SAMPLE_FAMILY = [{n:'James Johnson', pp:'AB7654321', child:false},{n:'Lily Johnson', pp:'AC2468135', child:true, age:9}];
+const tecTravellers = () => [{n:S.user.name, pp:S.user.passport, child:false, me:true}, ...(S.tec.who==='group'?S.tec.group:[])];
 function tecCalc(){
-  const T=S.tec, r=TEC_RATES[T.route].p;
-  const a=T.adults*r, te=T.teens*r*0.5;
-  const reb = T.sameDay ? Math.min(a, T.adults*10) + Math.min(te, T.teens*10) : 0;
-  return {r, a, te, reb, total: a+te-reb};
+  const L=tecTravellers(), paying=L.filter(t=>!t.child).length, exempt=L.length-paying;
+  return {r:TEC_FEE, paying, exempt, n:L.length, total:paying*TEC_FEE};
 }
+const maskPP = pp => pp ? pp.slice(0,2)+'•••'+pp.slice(-3) : '';
 SCREENS.tec = () => {
-  const T=S.tec, c=tecCalc();
+  const T=S.tec, c=tecCalc(), L=tecTravellers(), grp=T.who==='group';
   return page({
     header: hdr('Tourist Entry Contribution', {sub:'Sumbangan Kemasukan Pelancong (TEC)'}),
     body: `<div class="pad">
@@ -539,34 +551,44 @@ SCREENS.tec = () => {
         <div class="impact-grid">${[['mountain','Parks &amp; trails','Kinabalu and rainforest upkeep'],['ship','Reefs &amp; marine life','Coral and turtle protection'],['shield','Safer travel','Rangers, lifeguards, help desks'],['users','Local communities','Village guides and crafts']].map(([i,a,b])=>`<div class="impact-it"><span>${ic(i)}</span><b>${a}</b><small>${b}</small></div>`).join('')}</div>
         <div class="impact-foot">${ic('check')}<span><b>100% reinvested</b> in Sabah tourism, and every ringgit can be traced.</span></div>
       </section>
+      <div class="fee-card"><div><b>RM 50</b><span>per visitor</span></div><p>One standard price for every visitor aged 13 and over, by air, sea, land or cruise. Children 12 and under are free.</p></div>
       <div class="list-label">How are you entering Sabah?</div>
       <div class="route">${Object.entries(TEC_RATES).map(([k,v])=>`<button class="rt-tile ${T.route===k?'on':''}" onclick="S.tec.route='${k}';refresh()" aria-pressed="${T.route===k}"><span class="im" style="display:block"><img src="${img(v.img)}" alt=""><span class="ck">${ic('check')}</span></span><span class="bd"><span><b>${v.n}</b><small>${v.ms}</small></span><span class="p">RM${v.p}</span></span></button>`).join('')}</div>
       <div class="list-label">Arrival</div>
       <div class="card" style="padding:4px 16px">
-        <div class="row between" style="padding:12px 0;border-bottom:1px solid var(--line)"><b style="font-size:14px">Arrival date</b><input type="date" value="${T.date}" onchange="S.tec.date=this.value" style="border:0;font-weight:600;color:var(--blue);background:none;font-size:14px" aria-label="Arrival date"></div>
-        <div class="row between" style="padding:12px 0;gap:14px"><div><b style="font-size:14px">Leaving within 24 hours</b><p class="small muted">Day-trip rebate: RM10 per paying traveller</p></div>${toggle(T.sameDay,'S.tec.sameDay=!S.tec.sameDay;refresh()','Leaving within 24 hours')}</div>
+        <div class="row between" style="padding:12px 0"><b style="font-size:14px">Arrival date</b><input type="date" value="${T.date}" onchange="S.tec.date=this.value" style="border:0;font-weight:600;color:var(--blue);background:none;font-size:14px" aria-label="Arrival date"></div>
       </div>
-      <div class="list-label">Travellers</div>
-      <div class="card" style="padding:4px 16px">
-        ${stepRow('Adults','18 years & above · 100%',T.adults,"tecStep('adults',-1)","tecStep('adults',1)",1)}
-        ${stepRow('Teens','13 – 17 years · 50%',T.teens,"tecStep('teens',-1)","tecStep('teens',1)",0)}
-        ${stepRow('Children','12 years & below · Free',T.kids,"tecStep('kids',-1)","tecStep('kids',1)",0)}
-      </div>
+      <div class="list-label">Who are you paying for?</div>
+      <div class="seg" style="margin:0" role="group" aria-label="Who are you paying for"><button class="${grp?'':'on'}" onclick="S.tec.who='me';refresh()" aria-pressed="${!grp}">Just me</button><button class="${grp?'on':''}" onclick="tecGroup()" aria-pressed="${grp}">Me and my family or group</button></div>
+      ${grp?`<div class="list" style="margin-top:12px">${L.map((t,i)=>`<div class="li"><span class="ico ${t.child?'c-green':''}">${ic(t.child?'smile':'user')}</span><span class="tx"><b>${esc(t.n)}${t.me?' (you)':''}</b><small>Passport ${maskPP(t.pp)} · ${t.child?'12 or under'+(t.age?' ('+t.age+')':''):'13 or over'}</small></span><span class="pill ${t.child?'green':''}">${t.child?'Free':'RM 50'}</span>${t.me?'':`<button class="ib" style="width:34px;height:34px;border-radius:11px;margin-left:6px" onclick="tecRemove(${i-1})" aria-label="Remove ${esc(t.n)}">${ic('x')}</button>`}</div>`).join('')}
+        <button class="li" onclick="tecAddSheet()"><span class="ico">${ic('plus')}</span><span class="tx"><b style="color:var(--blue)">Add a traveller</b><small>Name and passport, as on MDAC</small></span></button></div>
+        <div class="howfam">${ic('info')}<div><b>How family passes work</b><p>You pay once for everyone. Each traveller gets their own QR pass, because everyone is scanned at entry. After paying you can save the passes as a PDF, add them to Wallet, or send each one to that traveller's own Sabah GO app. Children's passes can stay on your phone.</p></div></div>`
+      :`<div class="howfam">${ic('users')}<div><b>Travelling with others?</b><p>Pay for your family or group here and share their passes, or ask each adult to download Sabah GO and pay their own RM 50.</p><button class="btn btn-soft btn-sm" style="margin-top:8px" onclick="toast('Invite link copied: they can download Sabah GO and pay for themselves','link')">${ic('link')}Invite them to pay for themselves</button></div></div>`}
       <div class="list-label">Summary</div>
       <div class="card" style="padding:12px 16px">
-        <div class="sumrow"><span>${TEC_RATES[T.route].n} rate × ${T.adults} adult${T.adults>1?'s':''}</span><b>${rm(c.a)}</b></div>
-        ${T.teens?`<div class="sumrow"><span>Teens × ${T.teens} (50%)</span><b>${rm(c.te)}</b></div>`:''}
-        ${T.kids?`<div class="sumrow"><span>Children × ${T.kids}</span><b>Free</b></div>`:''}
-        ${c.reb?`<div class="sumrow"><span>24-hour rebate</span><b class="neg">− ${rm(c.reb)}</b></div>`:''}
-        <div class="sumrow tot"><span>Net contribution</span><b>${rm(c.total)}</b></div>
+        <div class="sumrow"><span>RM 50 × ${c.paying} visitor${c.paying>1?'s':''} aged 13 or over</span><b>${rm(c.total)}</b></div>
+        ${c.exempt?`<div class="sumrow"><span>Children 12 and under × ${c.exempt}</span><b>Free</b></div>`:''}
+        <div class="sumrow tot"><span>Total contribution</span><b>${rm(c.total)}</b></div>
         <div class="row between"><button class="btn-ghost small b" onclick="currencySheet()">${ic('swap','') .replace('<svg','<svg style="width:14px;display:inline;vertical-align:-2px"')} Show in ${S.cur==='MYR'?'my currency':S.cur}</button><span class="small muted">${conv(c.total)}</span></div>
       </div>
-      <p class="small muted" style="line-height:1.55;margin-top:14px">Travellers who stay longer and use more facilities contribute more; day visitors, teens and children pay a fairer, lower rate.</p>
+      <p class="small muted" style="line-height:1.55;margin-top:14px">${c.n} pass${c.n>1?'es':''} will be issued: one for each traveller.</p>
     </div>`,
-    footer: `<button class="btn btn-primary btn-block" onclick="startCheckout({kind:'tec', title:'Tourist Entry Contribution', sub:'${TEC_RATES[T.route].n} · ${T.adults+T.teens+T.kids} traveller${T.adults+T.teens+T.kids>1?'s':''}', amount:${c.total.toFixed(2)}})">Continue to payment · ${rm(c.total)}</button>`
+    footer: `<button class="btn btn-primary btn-block" onclick="startCheckout({kind:'tec', title:'Tourist Entry Contribution', sub:'${TEC_RATES[T.route].n} · ${c.n} traveller${c.n>1?'s':''}', amount:${c.total.toFixed(2)}})">Continue to payment · ${rm(c.total)}</button>`
   });
 };
-function tecStep(k,d){ S.tec[k]=Math.max(k==='adults'?1:0, Math.min(9,S.tec[k]+d)); refresh(); }
+function tecGroup(){ S.tec.who='group'; if(!S.tec.group.length) S.tec.group=SAMPLE_FAMILY.map(t=>({...t})); refresh(); }
+function tecRemove(i){ const t=S.tec.group[i]; S.tec.group.splice(i,1); if(!S.tec.group.length) S.tec.who='me'; toast(t.n+' removed','user'); refresh(); }
+function tecAddSheet(){ sheet(`<h3>Add a traveller</h3><p class="lead">Use the name and passport number from their MDAC. Each traveller gets their own pass.</p>
+  <div class="stack" style="gap:12px"><label class="field"><span>Full name (as in passport)</span><input class="inp" id="atN" autocomplete="off"></label>
+  <label class="field"><span>Passport number</span><input class="inp" id="atP" autocomplete="off"></label>
+  <label class="field"><span>Age on arrival</span><select class="inp" id="atA"><option value="a">13 or over · RM 50</option><option value="c">12 or under · free</option></select></label>
+  <p class="small" id="atE" style="color:var(--red);display:none"></p>
+  <button class="btn btn-primary btn-block" onclick="tecAdd()">Add traveller</button></div>`); }
+function tecAdd(){ const n=$('#atN').value.trim(), p=$('#atP').value.trim().toUpperCase(), e=$('#atE');
+  if(!n||!p){ e.textContent='Enter the name and passport number'; e.style.display='block'; return; }
+  if(!/^[A-Z0-9]{6,12}$/.test(p)){ e.textContent='Passport numbers are 6 to 12 letters and digits'; e.style.display='block'; return; }
+  if(tecTravellers().some(t=>t.pp===p)){ e.textContent='This passport is already in the group'; e.style.display='block'; return; }
+  S.tec.group.push({n, pp:p, child:$('#atA').value==='c'}); closeSheet(); toast(n+' added','user'); refresh(); }
 
 /* ---------- Checkout (all payment rails) ---------- */
 function startCheckout(o){ S.checkout=o; if(o.kind==='topup' && S.method==='wallet') S.method='visa'; go('pay'); }
@@ -610,7 +632,8 @@ function finishPay(o, m){
     const pts=Math.floor(o.amount/10)*10; S.points+=pts; o.pts=pts;
   }
   if(o.kind==='tec'){
-    S.pass={id:'SB-2611-'+(100000+rnd(899999)), until:'12 Dec 2026', issued:now(), route:TEC_RATES[S.tec.route].n, travellers:S.tec.adults+S.tec.teens+S.tec.kids};
+    const ms=tecTravellers().map(t=>({...t, id:'SB-2611-'+(100000+rnd(899999)), st:'phone'}));
+    S.pass={id:ms[0].id, until:'12 Dec 2026', issued:now(), route:TEC_RATES[S.tec.route].n, travellers:ms.length, members:ms}; S.passIdx=0;
     S.notifs=S.notifs.filter(n=>n.go!=='tec');
     S.notifs.unshift({id:'n'+Date.now(),ic:'ticket',c:'c-green',t:'Digital Tourist Pass issued',s:'Show it at entry, attractions and partner merchants.',time:'now',read:false,go:'pass'});
   }
@@ -621,9 +644,9 @@ function finishPay(o, m){
 }
 SCREENS.success = () => {
   const o=S.checkout;
-  const titles={tec:['Contribution paid','Your Digital Tourist Pass is ready. Terima kasih for supporting Sabah.'],booking:['Booking confirmed','We sent the ticket to your Trips and your email.'],merchant:['Payment successful',`Paid to ${o.title}. The merchant sees one payment; you see one receipt.`],topup:['Wallet topped up',`New balance ${rm(S.balance)}.`],bill:['Bill paid','Receipt saved to your wallet.']};
+  const titles={tec:['Contribution paid',(S.pass&&S.pass.travellers>1)?`${S.pass.travellers} Digital Tourist Passes are ready, one for each traveller. Share them from the pass screen.`:'Your Digital Tourist Pass is ready. Terima kasih for supporting Sabah.'],booking:['Booking confirmed','We sent the ticket to your Trips and your email.'],merchant:['Payment successful',`Paid to ${o.title}. The merchant sees one payment; you see one receipt.`],topup:['Wallet topped up',`New balance ${rm(S.balance)}.`],bill:['Bill paid','Receipt saved to your wallet.']};
   const [h,p]=titles[o.kind]||titles.bill;
-  const primary = {tec:[`View Digital Tourist Pass`,"tab('home');go('pass')"],booking:['View in Trips',"S.tripSeg='book';tab('trips')"],merchant:['Done',"tab('wallet')"],topup:['Back to Wallet',"tab('wallet')"],bill:['Back to Wallet',"tab('wallet')"]}[o.kind];
+  const primary = {tec:[(S.pass&&S.pass.travellers>1)?'View and share passes':`View Digital Tourist Pass`,"tab('home');go('pass')"],booking:['View in Trips',"S.tripSeg='book';tab('trips')"],merchant:['Done',"tab('wallet')"],topup:['Back to Wallet',"tab('wallet')"],bill:['Back to Wallet',"tab('wallet')"]}[o.kind];
   return page({
     body: `<div class="okwrap"><div class="okc">${ic('check')}</div><h1>${h}</h1><p>${p}</p>
     <div class="card receipt">
@@ -640,21 +663,66 @@ SCREENS.success = () => {
   });
 };
 
-/* ---------- Digital Tourist Pass ---------- */
+/* ---------- Digital Tourist Pass: one pass per traveller ---------- */
+const passMembers = () => S.pass.members || [{n:S.user.name, pp:S.user.passport, child:false, me:true, id:S.pass.id, st:'phone'}];
+const ST_L = {phone:['On your phone',''], sent:['Sent · waiting for them to claim','orange'], claimed:['In their own Sabah GO app','green']};
 SCREENS.pass = () => {
   if(!S.pass) return page({ header:hdr('Digital Tourist Pass'), body:`<div class="empty" style="padding-top:60px"><span class="bub c-orange">${ic('ticket')}</span><b>No pass yet</b><p>Link your MDAC and pay the Tourist Entry Contribution to get your Digital Tourist Pass instantly.</p><button class="btn btn-primary" onclick="go('${S.mdac?'tec':'mdac'}')">${S.mdac?'Pay contribution':'Link MDAC'}</button></div>` });
   statusLight=true;
+  const M=passMembers(), i=Math.min(S.passIdx||0,M.length-1), m=M[i], many=M.length>1, away=m.st==='claimed';
   const perks=[['ticket','Attraction access',"go('explore')"],['shield','Activity permits',"go('listing','act')"],['percent','Exclusive discounts',"go('listing','deal')"],['wallet','Cashless everywhere',"tab('wallet')"]];
   return page({ cls:'navyscr',
-    header: hdr('Digital Tourist Pass',{cls:'dark', sub:'Pas Digital Pelancong Sabah', right:`<button class="ib" onclick="toast('Screen brightness raised for scanning','sun')" aria-label="Brighten screen">${ic('sun')}</button>`}),
-    body: `<div class="pass"><div class="ph"><small>SABAH DIGITAL TOURIST PASS</small><h3>${S.user.name.toUpperCase()}</h3><div class="row" style="gap:8px;margin-top:6px"><span class="pill white">${S.user.flag} ${S.user.nat}</span><span class="pill white">${S.pass.route}</span></div></div>
-      <div class="pb"><div class="qr">${qr(S.pass.id)}</div><span class="verified">${ic('shield')}Pass verified · MDAC linked</span>
-      <div class="kv"><div><small>Passport</small><b>${S.user.passport}</b></div><div><small>Valid until</small><b>${S.pass.until}</b></div><div><small>Pass ID</small><b>${S.pass.id}</b></div><div><small>Travellers</small><b>${S.pass.travellers}</b></div></div></div></div>
+    header: hdr(many?'Digital Tourist Passes':'Digital Tourist Pass',{cls:'dark', sub:'Pas Digital Pelancong Sabah', right:`<button class="ib" onclick="toast('Screen brightness raised for scanning','sun')" aria-label="Brighten screen">${ic('sun')}</button>`}),
+    body: `${many?`<div class="pm-tabs" role="tablist" aria-label="Travellers">${M.map((x,k)=>`<button role="tab" aria-selected="${k===i}" class="${k===i?'on':''}" onclick="S.passIdx=${k};refresh()">${esc(x.n.split(' ')[0])}${x.me?' (you)':''}</button>`).join('')}</div>`:''}
+      <div class="pass"><div class="ph"><small>SABAH DIGITAL TOURIST PASS${many?` · ${i+1} OF ${M.length}`:''}</small><h3>${esc(m.n).toUpperCase()}</h3><div class="row" style="gap:8px;margin-top:6px;flex-wrap:wrap"><span class="pill white">${S.user.flag} ${S.user.nat}</span><span class="pill white">${S.pass.route}</span><span class="pill white">${m.child?'Exempt · 12 or under':'TEC paid · RM 50'}</span></div></div>
+      <div class="pb">${away?`<div class="qr away">${ic('phone')}<b>Pass moved to ${esc(m.n.split(' ')[0])}'s phone</b><small>They show it from their own Sabah GO app.</small></div>`:`<div class="qr">${qr(m.id)}</div>`}<span class="verified">${ic('shield')}Pass verified · MDAC linked</span>
+      <div class="kv"><div><small>Passport</small><b>${m.me?m.pp:maskPP(m.pp)}</b></div><div><small>Valid until</small><b>${S.pass.until}</b></div><div><small>Pass ID</small><b>${m.id}</b></div><div><small>Paid by</small><b>${m.me?'You':esc(S.user.name)}</b></div></div></div></div>
+      <div class="pad row" style="gap:10px;margin-top:16px"><button class="btn btn-light btn-sm" style="flex:1" onclick="toast('${esc(m.n.split(' ')[0])}\\'s pass added to Apple Wallet','wallet')">${ic('wallet')}Add to Wallet</button><button class="btn btn-light btn-sm" style="flex:1" onclick="savePassPdf(${i})">${ic('download')}Save PDF</button></div>
+      ${many?`<div class="list-label pad" style="padding:0 20px">Your group · ${M.length} passes</div>
+      <div class="pad"><div class="list">${M.map((x,k)=>{ const [l,c]=ST_L[x.st]; return `<div class="li"><span class="ico ${x.child?'c-green':''}">${ic(x.child?'smile':'user')}</span><span class="tx"><b>${esc(x.n)}${x.me?' (you)':''}</b><small>${x.child?'Exempt':'RM 50 paid'} · <span style="color:${c==='green'?'#0E8F57':c==='orange'?'#B85407':'inherit'}">${l}</span></small></span>${x.me?'':x.st==='claimed'?'<span class="pill green">Claimed</span>':`<button class="btn btn-soft btn-sm" onclick="sendPassSheet(${k})">${x.st==='sent'?'Resend':'Send'}</button>`}</div>`; }).join('')}</div>
+      <button class="btn btn-light btn-block btn-sm" style="margin-top:10px" onclick="savePassPdf()">${ic('download')}Save all ${M.length} passes as one PDF</button>
+      <p class="small muted" style="line-height:1.55;margin-top:10px">Everyone is scanned separately at entry. Show the passes from your phone, print the PDF, or send each adult their pass so they can show it themselves. Children can stay on your phone.</p></div>`:''}
       <div class="list-label pad" style="padding:0 20px">Your pass unlocks</div>
-      <div class="perks">${perks.map(([i,l,on])=>`<button onclick="${on}"><span class="ico">${ic(i)}</span>${l}</button>`).join('')}</div>
-      <div class="pad row" style="gap:10px;margin-top:16px"><button class="btn btn-light btn-sm" style="flex:1" onclick="toast('Added to Apple Wallet','wallet')">${ic('wallet')}Add to Wallet</button><button class="btn btn-light btn-sm" style="flex:1" onclick="toast('Pass saved as PDF','download')">${ic('download')}Save PDF</button></div>`
+      <div class="perks">${perks.map(([ic2,l,on])=>`<button onclick="${on}"><span class="ico">${ic(ic2)}</span>${l}</button>`).join('')}</div>`
   });
 };
+function sendPassSheet(k){ const m=passMembers()[k], code=m.id.slice(-6).replace(/(\d{3})(\d{3})/,'$1-$2');
+  sheet(`<h3>Send ${esc(m.n.split(' ')[0])} their pass</h3><p class="lead">They download Sabah GO, open the link or enter the code, and the pass moves to their phone. Nothing more to pay.</p>
+  <div class="card" style="padding:14px 16px;text-align:center;margin-bottom:14px"><small class="muted">Claim code</small><div style="font-size:26px;font-weight:800;letter-spacing:.12em;color:var(--navy)">${code}</div><small class="muted">sabahgo.my/claim/${m.id}</small></div>
+  <div class="stack" style="gap:8px">${[['WhatsApp','chat'],['WeChat','chat'],['Email','mail'],['Copy link','link']].map(([l,i2])=>`<button class="opt" onclick="passSent(${k},'${l}')"><span class="tx"><b>${l}</b></span>${ic(i2)}</button>`).join('')}</div>
+  <p class="small muted" style="margin-top:12px;line-height:1.5">You keep a copy until they claim it. Prefer paper? Use Save PDF instead.</p>`); }
+function passSent(k, via){ const m=passMembers()[k]; m.st='sent'; closeSheet(); toast(via==='Copy link'?'Claim link copied':`Pass sent to ${m.n.split(' ')[0]} by ${via}`,'check'); refresh();
+  setTimeout(()=>{ if(m.st==='sent'){ m.st='claimed'; toast(`${m.n.split(' ')[0]} claimed their pass in Sabah GO`,'check'); if(topScr().n==='pass') refresh(); } }, 6000); }
+
+/* QR modules as a matrix (same pattern as qr()), for the PDF */
+function qrMatrix(seed){
+  const n=25, g=Array.from({length:n},()=>Array(n).fill(0)); let h=0; for (const ch of seed) h=(h*31+ch.charCodeAt(0))>>>0;
+  const r=()=>{ h^=h<<13; h>>>=0; h^=h>>17; h^=h<<5; h>>>=0; return h/4294967296; };
+  const inF=(x,y)=>(x<8&&y<8)||(x>16&&y<8)||(x<8&&y>16);
+  for(let y=0;y<n;y++)for(let x=0;x<n;x++){ if(inF(x,y)) continue; if(x>=10&&x<=14&&y>=10&&y<=14) continue; if(r()>.52) g[y][x]=1; }
+  const fd=(ox,oy)=>{ for(let y=0;y<7;y++)for(let x=0;x<7;x++){ const e=x===0||y===0||x===6||y===6, c=x>=2&&x<=4&&y>=2&&y<=4; g[oy+y][ox+x]=(e||c)?1:0; } };
+  fd(0,0); fd(18,0); fd(0,18); for(let y=10;y<15;y++)for(let x=10;x<15;x++) g[y][x]=2; return g; }
+/* A real PDF, one page per pass, built in the browser */
+function savePassPdf(k){
+  const M=passMembers(), list=(k==null?M:[M[k]]).filter(m=>m.st!=='claimed'||k!=null);
+  const W=298, H=460, A=t=>String(t).replace(/[^\x20-\x7E]/g,'').replace(/[\\()]/g,x=>'\\'+x);
+  const T=(x,y,sz,f,t,col)=>`${col} rg BT /${f} ${sz} Tf ${x} ${y} Td (${A(t)}) Tj ET\n`;
+  const pages=list.map(m=>{ let c='0.039 0.141 0.388 rg 0 '+(H-96)+' '+W+' 96 re f\n';
+    c+=T(22,H-30,8,'F2','SABAH DIGITAL TOURIST PASS','0.75 0.85 1')+T(22,H-54,16,'F2',m.n.toUpperCase(),'1 1 1')+T(22,H-76,9.5,'F1',(m.child?'Exempt - 12 or under':'TEC paid - RM 50.00')+'   |   '+S.pass.route+' entry','1 1 1');
+    const cell=7.2, qx=(W-25*cell)/2, qy=H-120-25*cell, Q=qrMatrix(m.id); let d='', bl='';
+    Q.forEach((row,y)=>row.forEach((v,x)=>{ const r=`${(qx+x*cell).toFixed(2)} ${(qy+(24-y)*cell).toFixed(2)} ${cell} ${cell} re\n`; if(v===1) d+=r; else if(v===2) bl+=r; }));
+    c+='0.039 0.141 0.388 rg\n'+d+'f\n0.078 0.376 0.878 rg\n'+bl+'f\n';
+    let y=qy-34; [['Pass ID',m.id],['Passport',m.pp],['Valid until',S.pass.until],['Paid by',S.user.name+' - '+S.pass.issued]].forEach(([l,v])=>{ c+=T(22,y,8,'F1',l.toUpperCase(),'0.45 0.5 0.6')+T(110,y,10.5,'F2',v,'0.055 0.106 0.239'); y-=22; });
+    c+=T(22,26,7.5,'F1','Show this QR at entry, attractions and partner merchants. Verify at sabahgo.my','0.45 0.5 0.6');
+    return c; });
+  const objs=['<< /Type /Catalog /Pages 2 0 R >>', null, '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>', '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>'];
+  const kids=[]; pages.forEach(c=>{ objs.push(`<< /Length ${c.length} >>\nstream\n${c}endstream`); const cn=objs.length; objs.push(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${W} ${H}] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents ${cn} 0 R >>`); kids.push(objs.length+' 0 R'); });
+  objs[1]=`<< /Type /Pages /Kids [${kids.join(' ')}] /Count ${kids.length} >>`;
+  let out='%PDF-1.4\n'; const off=[]; objs.forEach((o,i)=>{ off.push(out.length); out+=`${i+1} 0 obj\n${o}\nendobj\n`; });
+  const xr=out.length; out+=`xref\n0 ${objs.length+1}\n0000000000 65535 f \n`+off.map(o=>String(o).padStart(10,'0')+' 00000 n \n').join('')+`trailer\n<< /Size ${objs.length+1} /Root 1 0 R >>\nstartxref\n${xr}\n%%EOF`;
+  const url=URL.createObjectURL(new Blob([out],{type:'application/pdf'})), a=document.createElement('a');
+  a.href=url; a.download=list.length>1?'sabah-go-passes.pdf':`sabah-go-pass-${list[0].n.split(' ')[0].toLowerCase()}.pdf`; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),4000);
+  toast(list.length>1?`${list.length} passes saved as one PDF`:'Pass saved as PDF','download'); }
 
 /* ---------- Trips ---------- */
 const TRIP_DAYS = [
@@ -684,7 +752,7 @@ SCREENS.trips = () => {
   </div></div>`;
   return page({ nav:'trips', withFab:true,
     header: hdr('My Trip',{back:false, right:`<button class="ib" onclick="shareIt('My Sabah Adventure')" aria-label="Share trip">${ic('share')}</button>`}),
-    body: `<div class="tripcard"><img src="/img/villas.jpg" alt=""><span class="cd"><b>22</b><small>days to go</small></span><div class="tc"><h3>Sabah Adventure</h3><div class="m"><span>${ic('cal')}12 – 17 Nov 2026</span><span>${ic('users')}${S.tec.adults+S.tec.teens+S.tec.kids} traveller${S.tec.adults+S.tec.teens+S.tec.kids>1?'s':''}</span><span>${ic('pin')}5 places</span></div></div></div>
+    body: `<div class="tripcard"><img src="/img/villas.jpg" alt=""><span class="cd"><b>22</b><small>days to go</small></span><div class="tc"><h3>Sabah Adventure</h3><div class="m"><span>${ic('cal')}12 – 17 Nov 2026</span><span>${ic('users')}${tecCalc().n} traveller${tecCalc().n>1?'s':''}</span><span>${ic('pin')}5 places</span></div></div></div>
     <div class="seg" style="margin:16px 20px 18px">${[['itin','Itinerary'],['book','Bookings'],['docs','Documents']].map(([k,l])=>`<button class="${seg===k?'on':''}" onclick="S.tripSeg='${k}';refresh()">${l}</button>`).join('')}</div>${body}`
   });
 };
@@ -873,7 +941,7 @@ SCREENS.help = () => page({
     <label class="field"><span>What happened?</span><textarea class="inp" id="rtext" aria-describedby="rerr" placeholder="Describe briefly. Location is attached automatically."></textarea></label><span class="field-err" id="rerr" role="alert"></span>
     <button class="btn btn-primary btn-block" onclick="sendReport()">Send report</button></div>
     <div class="list-label">FAQ</div>
-    ${[['Who must pay the Tourist Entry Contribution?','All foreign visitors entering Sabah by air, land, sea or cruise. Children 12 and under are free; teens pay 50%.'],['Can I pay without a Malaysian bank?','Yes. Use Alipay+, WeChat Pay, international cards, PayNow, PromptPay or QRIS. Prices show in your currency.'],['What if I leave within 24 hours?','Turn on “Leaving within 24 hours” when paying. You receive a RM10 rebate per paying traveller.'],['Is my data safe?','Sabah GO is owned by the Sabah State Government. Data is stored in Malaysia and protected under PDPA.']].map(([q,a],i)=>`<div class="acc" id="acc${i}"><button onclick="this.setAttribute('aria-expanded',$('#acc${i}').classList.toggle('open'))" aria-expanded="false" aria-controls="ans${i}">${q}${ic('chevD')}</button><div class="ans" id="ans${i}">${a}</div></div>`).join('')}
+    ${[['Who must pay the Tourist Entry Contribution?','All foreign visitors entering Sabah by air, land, sea or cruise. It is RM 50 per visitor aged 13 and over, the same by air, sea, land or cruise. Children 12 and under are free.'],['Can I pay without a Malaysian bank?','Yes. Use Alipay+, WeChat Pay, international cards, PayNow, PromptPay or QRIS. Prices show in your currency.'],['What if I leave within 24 hours?','Turn on “Leaving within 24 hours” when paying. You receive a RM10 rebate per paying traveller.'],['Is my data safe?','Sabah GO is owned by the Sabah State Government. Data is stored in Malaysia and protected under PDPA.']].map(([q,a],i)=>`<div class="acc" id="acc${i}"><button onclick="this.setAttribute('aria-expanded',$('#acc${i}').classList.toggle('open'))" aria-expanded="false" aria-controls="ans${i}">${q}${ic('chevD')}</button><div class="ans" id="ans${i}">${a}</div></div>`).join('')}
   </div>`
 });
 function sendReport(){
@@ -908,7 +976,7 @@ function stellaReply(q){
   if(has('eat','food','makan','restaurant','hungry','sedap')) return `You can't leave without trying these 🍤${dayCard('Must try','seafood','Butter prawns at Fatt Kee','Kopitiam · ~RM35/pax · 10% off with Pass','booking:f_fattkee')}${dayCard('Local','crafts','Hinava (raw fish salad)','Kadazan classic · Mari-Mari','booking:f_hinava')}${dayCard('Night','market1','Filipino Market grill','Pay by QR · from RM25','booking:f_seafood')}`;
   if(has('stay','hotel','penginapan','sleep','transport','ferry','car')) return `Top picks for your dates:${dayCard('Beach','resort23','Shangri-La Tanjung Aru','RM 780/night · RM120 cashback','booking:s_shangri')}${dayCard('Over water','bg_resort','Mabul Water Bungalows','RM 1,150/night · Semporna','booking:s_mabul')}${dayCard('Getting around','boat','Jesselton Point Ferry','Return RM 45','booking:v_ferry')}`;
   if(has('weather','cuaca','rain')) return `🌤️ <b>Kota Kinabalu</b>: 31°C, sunny morning, showers after 3pm.<br>⛰️ <b>Kinabalu Park</b>: 18°C, misty. Start hikes before 9am.<br>🏝️ <b>Semporna</b>: 30°C, calm seas and great visibility for diving.`;
-  if(has('tec','levy','contribution','sumbangan','tax','pass')) return `The <b>Tourist Entry Contribution</b> is paid once per entry: <b>RM75 air</b>, <b>RM35 land or sea</b>, <b>RM50 cruise</b>. Teens 13–17 pay half, children 12 and under are free, and there's a RM10 rebate if you leave within 24 hours.<div style="margin-top:8px"><button class="btn btn-primary btn-sm" onclick="go('${S.pass?'pass':S.mdac?'tec':'mdac'}')">${S.pass?'Show my pass':'Pay now'}</button></div>`;
+  if(has('tec','levy','contribution','sumbangan','tax','pass')) return `The <b>Tourist Entry Contribution</b> is a standard <b>RM 50</b> per visitor aged 13 and over, paid once per entry by air, sea, land or cruise. Children 12 and under are free. One person can pay for the whole family and share each traveller's pass by PDF or send it to their own Sabah GO app.<div style="margin-top:8px"><button class="btn btn-primary btn-sm" onclick="go('${S.pass?'pass':S.mdac?'tec':'mdac'}')">${S.pass?'Show my pass':'Pay now'}</button></div>`;
   if(has('deal','discount','promo','diskaun','coupon')) return `Your best deals right now 🎁<div class="qchips" style="margin-top:8px">${DEALS.slice(0,4).map(d=>`<button onclick="go('coupon','${d.id}')">${d.big} ${d.t}</button>`).join('')}</div>`;
   if(has('dive','diving','snorkel','island')) return `For divers, <b>Sipadan</b> is world class (permits are limited, so book early). Beginners love <b>Mabul</b> and <b>Manukan</b>.${dayCard('Dive','rec_diving','Sipadan Dive Day Trip','RM 450 · permit included','booking:a_sipadan')}${dayCard('Easy','manukan','Pulau Manukan','Snorkel right off the beach','dest:manukan')}`;
   if(has('book','tempah','activit','aktiviti','tour')) return `Popular activities you can book instantly:${['a_island','a_river','a_culture'].map(k=>dayCard(rm(ITEMS[k].price),ITEMS[k].img,ITEMS[k].name,ITEMS[k].sub,'booking:'+k)).join('')}`;
@@ -1024,7 +1092,7 @@ SCREENS.mlist = (k) => {
 const SIDE = [
   ['Splash',()=>{S.obIdx=0;tab('splash')}],['Onboarding',()=>{S.obIdx=0;tab('onboard')}],['Sign up',()=>tab('auth')],['MDAC',()=>{tab('home');go('mdac')}],
   ['Home',()=>toHome()],['Destinations',()=>{toHome();go('explore')}],['Semporna',()=>{toHome();S.dTab='overview';go('dest','semporna')}],
-  ['TEC payment',()=>{S.mdac=true;toHome();go('tec')}],['Digital Pass',()=>{if(!S.pass){S.mdac=true;S.pass={id:'SB-2611-482105',until:'12 Dec 2026',issued:now(),route:'Air',travellers:1};}toHome();go('pass')}],
+  ['TEC payment',()=>{S.mdac=true;toHome();go('tec')}],['Digital Pass',()=>{if(!S.pass){S.mdac=true;S.pass={id:'SB-2611-482105',until:'12 Dec 2026',issued:now(),route:'Air',travellers:1,members:[{n:S.user.name,pp:S.user.passport,child:false,me:true,id:'SB-2611-482105',st:'phone'}]};S.passIdx=0;}toHome();go('pass')}],
   ['Booking',()=>{toHome();go('booking','a_island')}],['My Trip',()=>{S.loggedIn=true;tab('trips')}],['Wallet',()=>{S.loggedIn=true;tab('wallet')}],['Scan & Pay',()=>{tab('wallet');go('scan')}],
   ['Rewards',()=>{S.loggedIn=true;tab('rewards')}],['Stella AI',()=>{toHome();go('stella')}],['Help 24/7',()=>{toHome();go('help')}],['Festivals',()=>{toHome();go('events')}],
   ['Profile',()=>{S.loggedIn=true;tab('profile')}],['Post-trip',()=>{tab('profile');go('postTrip')}],['Merchant app',()=>tab('mhome')],
