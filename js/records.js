@@ -179,7 +179,7 @@ function renderPicker(){
 }
 /* the visitor app and the command centre sit beside the ministry portals as their own sign-ins */
 const APP_PORTAL = {name:'Sabah GO visitor app', who:'Travellers · iOS and Android', img:'p_app', logoSrc:'/img/logo_mark.webp', tag:'Mobile app',
-  desc:'The traveller app: pay TEC, get the digital pass, plan with Stella AI, scan and pay, rewards and help.',
+  desc:'The traveller app: pay TEC, get the digital pass, plan with Bella AI, scan and pay, rewards and help.',
   maker:['Emma Johnson','emma.johnson@mail.com']};
 const COMMAND_PORTAL = {name:'State command centre', who:'All ministries together', img:'p_command', logo:'SG',
   desc:'KePKAS, Finance, Immigration and Operations on one wall, each showing only what its role needs.',

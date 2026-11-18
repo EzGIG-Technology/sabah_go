@@ -27,6 +27,6 @@ const IMGS = {
   pr_basket:['product-woven-basket.jpg','crafts.jpg'], pr_kuih:['product-kuih-box.jpg','market1.jpg'], pr_cincin:['product-kuih-cincin.jpg','market1.jpg'], pr_dastar:['product-dastar.jpg','crafts.jpg'],
   pr_mat:['product-woven-mat.jpg','crafts.jpg'], pr_beads:['product-beaded-bracelet.jpg','crafts.jpg'], pr_hinava:['product-hinava.jpg','market1.jpg'], pr_tea:['product-sabah-tea.jpg','kundasang2.jpg'],
   cat_food:['category-food.jpg','seafood.jpg'], cat_tour:['category-tours.jpg','islands.jpg'], cat_stay:['category-stays.jpg','villas.jpg'], cat_trans:['category-transport.jpg','boat.jpg'], cat_retail:['category-crafts.jpg','crafts.jpg'],
-  bella:['bella-ai.png','stella.jpg'],
+  bella:['bella-ai.png','bella.jpg'],
 };
 const bg = k => { const v=IMGS[k]; return v ? `url('${IMG_BASE}console/${v[0]}'), url('${IMG_BASE}${v[1]}')` : 'none'; };

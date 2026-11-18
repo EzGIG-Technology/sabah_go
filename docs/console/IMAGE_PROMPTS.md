@@ -59,6 +59,6 @@ Suggested prompt suffix: *"photorealistic, Sabah Borneo, natural light, deep nav
 | 43 | `cat_stay` | `category-stays.jpg` | 800×600 | Water villa resort deck at sunrise over a calm lagoon. | `villas.jpg` |
 | 44 | `cat_trans` | `category-transport.jpg` | 800×600 | Jetty with ferry boats lined up, morning. | `boat.jpg` |
 | 45 | `cat_retail` | `category-crafts.jpg` | 800×600 | Handicraft stall with baskets, beads and woven textiles. | `crafts.jpg` |
-| 46 | `bella` | `bella-ai.png` | 800×800 PNG, transparent background | Bella, the Sabah GO AI guide: friendly illustrated young woman in a teal and navy outfit inspired by Sabahan motifs, waving, flat vector style matching the app, transparent background. | `stella.jpg` |
+| 46 | `bella` | `bella-ai.png` | 800×800 PNG, transparent background | Bella, the Sabah GO AI guide: friendly illustrated young woman in a teal and navy outfit inspired by Sabahan motifs, waving, flat vector style matching the app, transparent background. | `bella.jpg` |
 
 Logos are not generated: they are in `console/img/logos/` (Sabah GO, Ministry of Finance Sabah, KePKAS, Jabatan Imigresen Malaysia). Confirm with each agency that their crest may be used before anything goes public.
