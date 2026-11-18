@@ -108,7 +108,7 @@ const $ = s => document.querySelector(s);
 const fmt = n => Number(n).toLocaleString('en-MY',{minimumFractionDigits:2, maximumFractionDigits:2});
 const rm = n => 'RM ' + fmt(n);
 const t = k => (I18N[S.lang]||I18N.en)[k] || I18N.en[k] || k;
-const img = n => `img/${n}.jpg`;
+const img = n => `/img/${n}.jpg`;
 const conv = n => { if (S.cur==='MYR') return ''; const c = CURR.find(c=>c[0]===S.cur); const v = n*c[2]; return `≈ ${S.cur} ${v>=1000?Math.round(v).toLocaleString():v.toFixed(2)}`; };
 const destById = id => DEST.find(d=>d.id===id);
 const isFav = id => S.favs.includes(id);
@@ -216,7 +216,7 @@ function navBar(active){
   <button class="center ${active==='wallet'?'on':''}" onclick="tab('wallet')" aria-label="${t('wallet')}"><span class="ring">${ic('wallet')}</span><span>${t('wallet')}</span></button>
   ${it('rewards','gift',t('rewards'))}${it('profile','user',t('profile'))}</nav>`;
 }
-function fab(){ return `<button class="fab" onclick="go('stella')" aria-label="Ask Stella, your AI travel assistant"><img src="img/stella.jpg" alt=""><span class="spark">${ic('sparkle')}</span><span class="lbl">Ask Stella</span></button>`; }
+function fab(){ return `<button class="fab" onclick="go('stella')" aria-label="Ask Stella, your AI travel assistant"><img src="/img/stella.jpg" alt=""><span class="spark">${ic('sparkle')}</span><span class="lbl">Ask Stella</span></button>`; }
 function page({header='', body='', nav=null, cls='', footer='', withFab=false}){
   return `<div class="scr ${cls} ${nav?'has-nav':'no-nav'} ${footer?'has-footer':''}">${header}<main class="content">${body}</main>${footer?`<div class="footer">${footer}</div>`:''}${withFab?fab():''}${nav?navBar(nav):''}</div>`;
 }
@@ -237,7 +237,7 @@ const SCREENS = {};
 SCREENS.splash = () => {
   setTimeout(()=>{ if (topScr().n==='splash') replace('onboard'); }, 2200);
   return `<div class="scr"><div class="splash" onclick="replace('onboard')" role="button" tabindex="0" aria-label="Sabah GO. Tap to continue">
-    <img class="logo" src="img/logo.webp" alt="Sabah GO, your journey enriched">
+    <img class="logo" src="/img/logo.webp" alt="Sabah GO, your journey enriched">
     <div class="ld"><i></i></div><div class="wave"></div>
     <div class="by">Official tourism app of the Sabah State Government</div></div></div>`;
 };
@@ -278,7 +278,7 @@ SCREENS.lang = (p={}) => {
 SCREENS.auth = () => {
   const su = S.authTab==='signup';
   return page({
-    header: `<div style="padding:calc(var(--sb) + 18px) 24px 6px"><div class="row" style="gap:10px"><img class="mark" src="img/logo_mark.webp" alt="">${wm('sm')}</div>
+    header: `<div style="padding:calc(var(--sb) + 18px) 24px 6px"><div class="row" style="gap:10px"><img class="mark" src="/img/logo_mark.webp" alt="">${wm('sm')}</div>
       <h1 style="font-size:26px;font-weight:800;margin-top:18px;color:var(--navy)">${su?'Create your account':'Welcome back'}</h1>
       <p class="muted" style="font-size:13.5px;margin-top:4px">${su?'One digital identity for your whole Sabah journey.':'Log in to continue your journey.'}</p></div>`,
     body: `<div class="seg" style="margin:14px 20px 18px"><button class="${su?'on':''}" onclick="S.authTab='signup';refresh()">Sign up</button><button class="${!su?'on':''}" onclick="S.authTab='login';refresh()">Log in</button></div>
@@ -339,8 +339,8 @@ SCREENS.home = () => {
   const cats = [['c_dest','pin','c-blue',"go('explore')"],['c_act','activity','c-green',"go('listing','act')"],['c_food','food','c-orange',"go('listing','food')"],['c_shop','shop','c-red',"go('listing','shop')"],['c_stay','bed','c-purple',"go('listing','stay')"],['c_deal','tag','c-teal',"go('listing','deal')"],['c_svc','info','c-navy',"go('services')"],['c_rw','gift','c-gold',"tab('rewards')"]];
   const reco = [['rec_diving','Diving','Sipadan',"go('dest','sipadan')"],['rec_orangutan','Wildlife','Sepilok & Kinabatangan',"go('dest','kinabatangan')"],['rec_waterfall','Waterfalls','Danum Valley',"go('dest','danum')"],['marimari','Culture','Mari-Mari',"go('dest','marimari')"],['seafood','Food Tour','Kota Kinabalu',"go('booking','a_food')"]];
   return page({ nav:'home', withFab:true,
-    body: `<div class="home-top"><img class="bg" src="img/hero_sabah.jpg" alt="Mount Kinabalu above water villages">
-      <div class="home-logo"><div class="lg"><img class="mark" src="img/logo_mark.webp" alt="">${wm('sm')}</div>
+    body: `<div class="home-top"><img class="bg" src="/img/hero_sabah.jpg" alt="Mount Kinabalu above water villages">
+      <div class="home-logo"><div class="lg"><img class="mark" src="/img/logo_mark.webp" alt="">${wm('sm')}</div>
         <div class="row" style="gap:8px"><button class="ib" onclick="go('lang')" aria-label="Language">${ic('globe')}</button><button class="ib" onclick="go('notifs')" aria-label="Notifications, ${unread()} unread">${ic('bell')}${unread()?'<span class="dot-badge"></span>':''}</button></div></div>
       <div class="home-hero-tx"><div class="hi">${t('welcome')}, ${S.loggedIn?S.user.name.split(' ')[0]:'traveller'} 👋</div><h1>${t('discover')}</h1><p>${t('heroSub')}</p></div>
       <div class="home-search"><button class="search" onclick="go('search')">${ic('search')}<span>${t('search')}</span><span class="filt">${ic('sliders')}</span></button></div></div>
@@ -349,7 +349,7 @@ SCREENS.home = () => {
       <div class="sec"><div class="grid4">${cats.map(([k,icn,c,on])=>`<button class="cat" onclick="${on}"><span class="bub ${c}">${ic(icn)}</span>${t(k)}</button>`).join('')}</div></div>
       <div class="sec"><div class="sec-h"><h2>${t('popular')}</h2><button onclick="go('explore')">${t('seeAll')}</button></div>
         <div class="hscroll">${DEST.slice(0,6).map(d=>`<div class="dcard"><img src="${img(d.img)}" alt="" loading="lazy"><span class="rt" aria-label="Rated ${d.rating}">${ic('star')}${d.rating}</span>${heartBtn(d.id,'hrt')}<span class="t"><button class="stretch" onclick="go('dest','${d.id}')"><b>${d.name}</b></button><small>${d.tag}</small></span></div>`).join('')}</div></div>
-      <div class="sec"><button class="banner" onclick="go('stella',{prompt:'Plan a 5-day trip in Sabah'})"><img src="img/stella_banner.jpg" alt=""><span class="bt"><span class="kick">${ic('sparkle')}${S.lang==='ms'?'Stella · Perancang perjalanan AI':'Stella · AI trip planner'}</span><h3>${t('banner')}</h3><p>${t('bannerSub')}</p><span class="cta">${ic('sparkle')}${t('bannerCta')}</span></span></button></div>
+      <div class="sec"><button class="banner" onclick="go('stella',{prompt:'Plan a 5-day trip in Sabah'})"><img src="/img/stella_banner.jpg" alt=""><span class="bt"><span class="kick">${ic('sparkle')}${S.lang==='ms'?'Stella · Perancang perjalanan AI':'Stella · AI trip planner'}</span><h3>${t('banner')}</h3><p>${t('bannerSub')}</p><span class="cta">${ic('sparkle')}${t('bannerCta')}</span></span></button></div>
       <div class="sec"><div class="sec-h"><h2>${t('reco')}</h2><button onclick="go('listing','act')">${t('seeAll')}</button></div>
         <div class="hscroll">${reco.map(([im,n,s,on])=>`<button class="rcard" onclick="${on}"><span class="im" style="display:block"><img src="${img(im)}" alt="" loading="lazy"></span><b>${n}</b><small>${s}</small></button>`).join('')}</div></div>
       <div class="sec"><div class="sec-h"><h2>${t('events')}</h2><button onclick="go('events')">${t('seeAll')}</button></div>
@@ -432,7 +432,7 @@ SCREENS.dest = (id) => {
       <div class="tt"><h1>${d.name}</h1><p>${d.tag}</p><div class="row" style="gap:10px;margin-top:8px;font-size:12.5px">${stars(d.rating)}<span style="opacity:.85">${d.reviews.toLocaleString()} reviews</span></div></div></div>
       <div class="dbody"><div class="tabs" aria-label="Sections">${tabs.map(([k,l,icn])=>`<button class="${T===k?'on':''}" onclick="S.dTab='${k}';refresh()">${ic(icn)}${l}</button>`).join('')}</div>
       <div class="pad" style="padding-top:16px">${body}</div></div>`,
-    footer: `<div class="row" style="gap:10px"><button class="ib" style="width:52px;height:52px;border-radius:16px" onclick="go('stella',{prompt:'Tell me about ${d.name}'})" aria-label="Ask Stella about ${d.name}"><img src="img/stella.jpg" alt="" style="width:36px;height:36px;border-radius:50%;object-fit:cover;object-position:50% 35%"></button><button class="btn btn-primary" style="flex:1" onclick="planSheet('${d.id}')">${ic('cal')} Plan Your Trip</button></div>`
+    footer: `<div class="row" style="gap:10px"><button class="ib" style="width:52px;height:52px;border-radius:16px" onclick="go('stella',{prompt:'Tell me about ${d.name}'})" aria-label="Ask Stella about ${d.name}"><img src="/img/stella.jpg" alt="" style="width:36px;height:36px;border-radius:50%;object-fit:cover;object-position:50% 35%"></button><button class="btn btn-primary" style="flex:1" onclick="planSheet('${d.id}')">${ic('cal')} Plan Your Trip</button></div>`
   });
 };
 function planSheet(id){
@@ -583,7 +583,7 @@ SCREENS.pay = () => {
         <p class="small" style="opacity:.8">${o.sub||''}</p>
         <button class="pill white" style="margin-top:10px;min-height:44px;padding:0 14px" onclick="currencySheet()">${ic('globe')} ${S.cur==='MYR'?'Show in my currency':conv(o.amount)}</button>
       </div>
-      ${groups.map(g=>`<div class="grp">${g.g}</div><div class="stack" style="gap:8px">${g.items.map(([k,n,s,logo])=>`<button class="opt ${S.method===k?'on':''}" onclick="S.method='${k}';refresh()"><span class="radio"></span><span class="tx"><b>${n}</b><small>${k==='wallet'?'Balance '+rm(S.balance):s}</small></span>${logo?`<span class="lg2"><img src="img/${logo}.png" alt="${n}"></span>`:`<span class="lg2" style="background:var(--grad);border:0;color:#fff">${ic('wallet')}</span>`}</button>`).join('')}</div>`).join('')}
+      ${groups.map(g=>`<div class="grp">${g.g}</div><div class="stack" style="gap:8px">${g.items.map(([k,n,s,logo])=>`<button class="opt ${S.method===k?'on':''}" onclick="S.method='${k}';refresh()"><span class="radio"></span><span class="tx"><b>${n}</b><small>${k==='wallet'?'Balance '+rm(S.balance):s}</small></span>${logo?`<span class="lg2"><img src="/img/${logo}.png" alt="${n}"></span>`:`<span class="lg2" style="background:var(--grad);border:0;color:#fff">${ic('wallet')}</span>`}</button>`).join('')}</div>`).join('')}
       <div class="info-box green" style="margin-top:18px">${ic('lock')}<span>One QR, every rail. No card data is stored on your phone; all transactions are kept in Malaysia under PDPA.</span></div>
     </div>`,
     footer: `<button class="btn btn-primary btn-block" onclick="doPay()">${ic('lock')} Pay ${rm(o.amount)} with ${m?m[1]:'…'}</button>`
@@ -684,7 +684,7 @@ SCREENS.trips = () => {
   </div></div>`;
   return page({ nav:'trips', withFab:true,
     header: hdr('My Trip',{back:false, right:`<button class="ib" onclick="shareIt('My Sabah Adventure')" aria-label="Share trip">${ic('share')}</button>`}),
-    body: `<div class="tripcard"><img src="img/villas.jpg" alt=""><span class="cd"><b>22</b><small>days to go</small></span><div class="tc"><h3>Sabah Adventure</h3><div class="m"><span>${ic('cal')}12 – 17 Nov 2026</span><span>${ic('users')}${S.tec.adults+S.tec.teens+S.tec.kids} traveller${S.tec.adults+S.tec.teens+S.tec.kids>1?'s':''}</span><span>${ic('pin')}5 places</span></div></div></div>
+    body: `<div class="tripcard"><img src="/img/villas.jpg" alt=""><span class="cd"><b>22</b><small>days to go</small></span><div class="tc"><h3>Sabah Adventure</h3><div class="m"><span>${ic('cal')}12 – 17 Nov 2026</span><span>${ic('users')}${S.tec.adults+S.tec.teens+S.tec.kids} traveller${S.tec.adults+S.tec.teens+S.tec.kids>1?'s':''}</span><span>${ic('pin')}5 places</span></div></div></div>
     <div class="seg" style="margin:16px 20px 18px">${[['itin','Itinerary'],['book','Bookings'],['docs','Documents']].map(([k,l])=>`<button class="${seg===k?'on':''}" onclick="S.tripSeg='${k}';refresh()">${l}</button>`).join('')}</div>${body}`
   });
 };
@@ -746,7 +746,7 @@ SCREENS.scan = () => {
     <header class="hdr dark" style="position:relative"><button class="ib" onclick="back()" aria-label="Close scanner">${ic('x')}</button><div class="hdr-t"><h1>Scan & Pay</h1></div><button class="ib" onclick="toast('Scan any Sabah GO, DuitNow, Alipay+ or PayNow QR','info')" aria-label="Help">${ic('info')}</button></header>
     <button class="frame" onclick="scanned()" aria-label="Simulate scanning a merchant QR"><span class="qrghost">${qr('fattkee','#222')}</span><span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span><span class="line"></span></button>
     <div class="hint">Point at any merchant QR code<small>Tap the frame to simulate a scan</small></div>
-    <div class="rails">${['pay_duitnow','pay_alipay','pay_wechat','pay_paynow','pay_qris','pay_promptpay'].map(l=>`<span><img src="img/${l}.png" alt=""></span>`).join('')}</div>
+    <div class="rails">${['pay_duitnow','pay_alipay','pay_wechat','pay_paynow','pay_qris','pay_promptpay'].map(l=>`<span><img src="/img/${l}.png" alt=""></span>`).join('')}</div>
     <div class="tools"><button onclick="S.torch=!S.torch;refresh()"><span class="c ${S.torch?'on':''}">${ic('flash')}</span>Torch</button><button onclick="toast('Reading QR from photo…','image');setTimeout(scanned,900)"><span class="c">${ic('image')}</span>Gallery</button><button onclick="replace('myqr')"><span class="c">${ic('qr')}</span>My QR</button></div>
   </div></div>`;
 };
@@ -755,7 +755,7 @@ SCREENS.merchantPay = () => {
   const v=parseFloat(S.kp||'0');
   return page({
     header: hdr('Pay merchant'),
-    body: `<div class="pad"><div class="card row" style="padding:14px;gap:12px"><img src="img/seafood.jpg" alt="" style="width:52px;height:52px;border-radius:14px;object-fit:cover"><div style="flex:1"><b>Kedai Kopi Fatt Kee</b><p class="small muted">Jalan Bakau, Kota Kinabalu</p></div><span class="pill green">${ic('shield')}Licensed</span></div></div>
+    body: `<div class="pad"><div class="card row" style="padding:14px;gap:12px"><img src="/img/seafood.jpg" alt="" style="width:52px;height:52px;border-radius:14px;object-fit:cover"><div style="flex:1"><b>Kedai Kopi Fatt Kee</b><p class="small muted">Jalan Bakau, Kota Kinabalu</p></div><span class="pill green">${ic('shield')}Licensed</span></div></div>
     <div class="amtdisp"><small>Enter amount</small><div class="v"><span>RM</span>${S.kp||'0'}</div>${conv(v)?`<small>${conv(v)}</small>`:'<small>&nbsp;</small>'}</div>
     <div class="chips" style="justify-content:center;margin-bottom:14px">${[10,25,50,100].map(a=>`<button class="chip" onclick="S.kp='${a}';refresh()">RM ${a}</button>`).join('')}</div>
     <div class="keys">${['1','2','3','4','5','6','7','8','9','.','0','del'].map(k=>`<button onclick="kp('${k}')" aria-label="${k==='del'?'Delete':k}">${k==='del'?ic('chevL'):k}</button>`).join('')}</div>`,
@@ -780,8 +780,8 @@ SCREENS.bills = () => page({ header:hdr('Pay Bills',{sub:'Permits, park fees & l
 function billSheet(i){ const b=BILLS[i]; sheet(`<h3>${b[0]}</h3><p class="lead">${b[1]}</p><div class="card" style="padding:10px 16px;box-shadow:none;background:var(--bg)"><div class="sumrow"><span>Payer</span><b>${S.user.name}</b></div><div class="sumrow"><span>Passport</span><b>${S.user.passport}</b></div><div class="sumrow tot"><span>Amount</span><b>${rm(b[2])}</b></div></div>
   <button class="btn btn-primary btn-block" style="margin-top:16px" onclick="startCheckout({kind:'bill', title:'${b[0]}', sub:'${b[1]}', amount:${b[2]}})">Pay ${rm(b[2])}</button>`); }
 SCREENS.methods = (focus) => page({ header:hdr('Payment methods',{right:`<button class="ib" onclick="addCardSheet()" aria-label="Add card">${ic('plus')}</button>`}),
-  body:`<div class="pad"><div class="card" style="padding:18px;background:linear-gradient(120deg,#1A1F71,#2B3A9A);color:#fff;border-radius:22px"><div class="row between"><b>Visa Debit</b><img src="img/pay_visa.png" alt="Visa" style="height:22px;background:#fff;border-radius:6px;padding:3px 6px"></div><div style="font-size:19px;letter-spacing:.14em;margin:26px 0 10px;font-weight:600">•••• •••• •••• 4821</div><div class="row between small" style="opacity:.85"><span>${S.user.name.toUpperCase()}</span><span>09/29</span></div></div>
-  ${RAILS.slice(1).map(g=>`<div class="grp">${g.g}${(focus==='intl'&&g.g.includes('International'))||(focus==='ewallet'&&(g.g==='China'||g.g.includes('ASEAN')))?' · <span style="color:var(--blue)">suggested</span>':''}</div><div class="list">${g.items.map(([k,n,s,logo])=>`<div class="li"><span class="lg2" style="width:52px;height:36px;border-radius:9px;border:1px solid var(--line);display:grid;place-items:center;padding:4px;flex-shrink:0"><img src="img/${logo}.png" alt="" style="max-width:100%;max-height:100%;object-fit:contain"></span><span class="tx"><b>${n}</b><small>${k==='visa'?'Default · '+s:s}</small></span>${k==='visa'?'<span class="pill green">Linked</span>':`<button class="btn btn-soft btn-sm" onclick="toast('${n} linked','check');this.outerHTML='<span class=&quot;pill green&quot;>Linked</span>'">Link</button>`}</div>`).join('')}</div>`).join('')}</div>` });
+  body:`<div class="pad"><div class="card" style="padding:18px;background:linear-gradient(120deg,#1A1F71,#2B3A9A);color:#fff;border-radius:22px"><div class="row between"><b>Visa Debit</b><img src="/img/pay_visa.png" alt="Visa" style="height:22px;background:#fff;border-radius:6px;padding:3px 6px"></div><div style="font-size:19px;letter-spacing:.14em;margin:26px 0 10px;font-weight:600">•••• •••• •••• 4821</div><div class="row between small" style="opacity:.85"><span>${S.user.name.toUpperCase()}</span><span>09/29</span></div></div>
+  ${RAILS.slice(1).map(g=>`<div class="grp">${g.g}${(focus==='intl'&&g.g.includes('International'))||(focus==='ewallet'&&(g.g==='China'||g.g.includes('ASEAN')))?' · <span style="color:var(--blue)">suggested</span>':''}</div><div class="list">${g.items.map(([k,n,s,logo])=>`<div class="li"><span class="lg2" style="width:52px;height:36px;border-radius:9px;border:1px solid var(--line);display:grid;place-items:center;padding:4px;flex-shrink:0"><img src="/img/${logo}.png" alt="" style="max-width:100%;max-height:100%;object-fit:contain"></span><span class="tx"><b>${n}</b><small>${k==='visa'?'Default · '+s:s}</small></span>${k==='visa'?'<span class="pill green">Linked</span>':`<button class="btn btn-soft btn-sm" onclick="toast('${n} linked','check');this.outerHTML='<span class=&quot;pill green&quot;>Linked</span>'">Link</button>`}</div>`).join('')}</div>`).join('')}</div>` });
 function addCardSheet(){ sheet(`<h3>Add a card</h3><p class="lead">Visa, Mastercard, JCB, UnionPay or Amex. Card details are tokenised by our licensed acquirer.</p>
   <label class="field"><span>Card number</span><input class="inp" inputmode="numeric" placeholder="0000 0000 0000 0000" autocomplete="cc-number"></label>
   <div class="row" style="gap:10px"><label class="field" style="flex:1"><span>Expiry</span><input class="inp" placeholder="MM/YY" autocomplete="cc-exp"></label><label class="field" style="flex:1"><span>CVV</span><input class="inp" placeholder="•••" inputmode="numeric" autocomplete="cc-csc"></label></div>
@@ -889,15 +889,15 @@ function callSheet(num, label){ sheet(`<div style="text-align:center"><span clas
 SCREENS.stella = (p={}) => {
   const pending = p && p.prompt; if(pending){ p.prompt=null; setTimeout(()=>stellaSend(pending),300); }
   const menu=[['pin','Destination ideas','Tempat menarik di seluruh Sabah','Recommend destinations'],['cal','Plan my trip','Pelan itinerari peribadi','Plan a 5-day trip in Sabah'],['food','Food & experiences','Makanan, budaya & aktiviti unik','What should I eat'],['bed','Stays & transport','Hotel, penerbangan, feri & kereta','Where should I stay'],['lang','Translate','Terjemah bahasa','Translate basic phrases'],['alert','Emergency help','Bantuan kecemasan','Emergency help']];
-  return `<div class="scr"><header class="hdr white"><button class="ib" onclick="back()" aria-label="Back">${ic('chevL')}</button><img src="img/stella.jpg" alt="" style="width:40px;height:40px;border-radius:50%;object-fit:cover;object-position:50% 35%"><div class="hdr-t" style="text-align:left"><h1>Stella</h1><p style="color:var(--okText)">● AI Travel Assistant · online</p></div><button class="ib" onclick="S.chat=[];refresh();toast('New conversation','refresh')" aria-label="New chat">${ic('refresh')}</button></header>
+  return `<div class="scr"><header class="hdr white"><button class="ib" onclick="back()" aria-label="Back">${ic('chevL')}</button><img src="/img/stella.jpg" alt="" style="width:40px;height:40px;border-radius:50%;object-fit:cover;object-position:50% 35%"><div class="hdr-t" style="text-align:left"><h1>Stella</h1><p style="color:var(--okText)">● AI Travel Assistant · online</p></div><button class="ib" onclick="S.chat=[];refresh();toast('New conversation','refresh')" aria-label="New chat">${ic('refresh')}</button></header>
   <main class="content" id="chatScroll" style="padding-top:14px">
-    <div class="stella-hero"><img src="img/stella_hero.jpg" alt="Stella, your Sabah travel assistant"><div class="bub2">Bah, selamat datang ke Sabah! Saya <b>Stella</b>. How can I help you explore Sabah today?</div><span class="tag"><i></i>Smart Tourism Experience &amp; Local Lifestyle Assistant</span></div>
+    <div class="stella-hero"><img src="/img/stella_hero.jpg" alt="Stella, your Sabah travel assistant"><div class="bub2">Bah, selamat datang ke Sabah! Saya <b>Stella</b>. How can I help you explore Sabah today?</div><span class="tag"><i></i>Smart Tourism Experience &amp; Local Lifestyle Assistant</span></div>
     ${S.chat.length?'':`<div class="pad smenu" style="margin-top:12px">${menu.map(([i,a,b,q])=>`<button onclick="stellaSend('${q}')"><span class="ico">${ic(i)}</span><span><b>${a}</b><small>${b}</small></span>${ic('chevR','chev')}</button>`).join('')}</div>`}
     <div class="chat" id="chat">${S.chat.map(chatMsg).join('')}</div>
   </main>
   <div class="chatbar"><button class="mic" id="mic" onclick="stellaMic()" aria-label="Voice input">${ic('mic')}</button><input id="ci" placeholder="Ask Stella anything…" onkeydown="if(event.key==='Enter')stellaSend(this.value)" aria-label="Message Stella"><button class="send" onclick="stellaSend($('#ci').value)" aria-label="Send">${ic('send')}</button></div></div>`;
 };
-const chatMsg = m => m.from==='me' ? `<div class="msg me">${m.html}</div>` : `<div class="botrow"><img src="img/stella.jpg" alt=""><div class="msg bot">${m.html}</div></div>`;
+const chatMsg = m => m.from==='me' ? `<div class="msg me">${m.html}</div>` : `<div class="botrow"><img src="/img/stella.jpg" alt=""><div class="msg bot">${m.html}</div></div>`;
 const dayCard = (d, im, n, s, g) => `<button class="daycard" onclick="goto('${g}')"><img src="${img(im)}" alt=""><span style="min-width:0"><span class="d">${d}</span><b>${n}</b><small>${s}</small></span>${ic('chevR','chev')}</button>`;
 function stellaReply(q){
   const s=q.toLowerCase(), has=(...w)=>w.some(x=>s.includes(x));
@@ -922,7 +922,7 @@ function stellaSend(text){
   if(topScr().n!=='stella') return go('stella',{prompt:text});
   S.chat.push({from:'me', html:text.replace(/</g,'&lt;')});
   refresh(); const ci=$('#ci'); if(ci) ci.value='';
-  const chat=$('#chat'); chat.insertAdjacentHTML('beforeend', `<div class="botrow" id="typing"><img src="img/stella.jpg" alt=""><div class="msg bot typing"><i></i><i></i><i></i></div></div>`);
+  const chat=$('#chat'); chat.insertAdjacentHTML('beforeend', `<div class="botrow" id="typing"><img src="/img/stella.jpg" alt=""><div class="msg bot typing"><i></i><i></i><i></i></div></div>`);
   scrollChat();
   setTimeout(()=>{ S.chat.push({from:'bot', html:stellaReply(text)}); if(topScr().n==='stella'){ refresh(); scrollChat(); } }, 900);
 }
@@ -957,6 +957,7 @@ SCREENS.profile = () => {
       <div class="list-label">For businesses</div><div class="list">${li({icon:'store',c:'',title:'Switch to Merchant app',sub:'Sabah GO Merchant · accept QR payments',onclick:"tab('mhome')"})}</div>
       <button class="btn btn-danger btn-block" style="margin-top:22px" onclick="logoutSheet()">${ic('logout')}Log out</button>
       <button class="btn btn-ghost btn-block" onclick="S=fresh();stack=[{n:'splash'}];render()">${ic('refresh')}Restart demo</button>
+      <a class="btn btn-ghost btn-block" href="/" style="text-decoration:none">${ic('logout')}Back to Sabah GO Console</a>
       <p class="small muted" style="text-align:center;margin-top:6px">Sabah GO v1.0 · Kerajaan Negeri Sabah</p>
     </div>`
   });
@@ -970,16 +971,16 @@ SCREENS.privacy = () => page({ header:hdr('Privacy & data'),
   body:`<div class="pad"><div class="list">${[['shield','Data stays in Malaysia','All transaction data is stored in Malaysia under PDPA.'],['lock','No card data on your phone','Payments are tokenised by licensed acquirers (PCI DSS, BNM RMiT).'],['eye','You control sharing','Location and marketing can be switched off anytime.']].map(([i,a,b])=>li({icon:i,title:a,sub:b,onclick:'',chev:false})).join('')}</div>
   <div class="stack" style="margin-top:16px"><button class="btn btn-light btn-block" onclick="toast('Your data export will be emailed','download')">${ic('download')}Download my data</button><button class="btn btn-danger btn-block" onclick="toast('Request sent. We will confirm by email.','info')">Request account deletion</button></div></div>` });
 SCREENS.about = () => page({ header:hdr('About Sabah GO'),
-  body:`<div class="pad" style="text-align:center"><img src="img/logo.webp" alt="Sabah GO, your journey enriched" style="width:200px;height:auto;margin:4px auto 0">
+  body:`<div class="pad" style="text-align:center"><img src="/img/logo.webp" alt="Sabah GO, your journey enriched" style="width:200px;height:auto;margin:4px auto 0">
   <p class="para" style="margin-top:16px;text-align:left">Sabah GO is the digital platform owned by the Sabah State Government, built for travellers, local merchants and everyone in Sabah's tourism ecosystem. One digital identity, one licensed operator platform, and one ledger: contributions are collected fairly, data is complete, and every ringgit can be traced.</p>
   <div class="facts" style="margin-top:16px;text-align:left"><div class="fact">${ic('shield')}<b>Owned by</b><span>Sabah State Govt</span></div><div class="fact">${ic('lock')}<b>Security</b><span>PDPA · PCI DSS</span></div><div class="fact">${ic('users')}<b>For</b><span>Everyone</span></div></div></div>` });
 
 /* ---------- Post-trip ---------- */
 SCREENS.postTrip = () => {
   return page({ cls:'nohdr',
-    body:`<div style="position:relative;height:300px"><img src="img/jetty_sunset.jpg" alt="" style="width:100%;height:100%;object-fit:cover"><div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.9) 0%,rgba(255,255,255,.4) 45%,var(--bg) 100%)"></div>
+    body:`<div style="position:relative;height:300px"><img src="/img/jetty_sunset.jpg" alt="" style="width:100%;height:100%;object-fit:cover"><div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.9) 0%,rgba(255,255,255,.4) 45%,var(--bg) 100%)"></div>
     <div style="position:absolute;top:calc(var(--sb) + 6px);left:16px"><button class="ib" onclick="back()" aria-label="Back">${ic('chevL')}</button></div>
-    <div style="position:absolute;left:0;right:0;top:calc(var(--sb) + 36px);text-align:center"><img src="img/logo_mark.webp" alt="" style="width:112px;height:auto;margin:0 auto"><h1 style="font-size:30px;font-weight:800;color:var(--navy);margin-top:8px">Terima Kasih!</h1><p style="color:var(--ink2);font-size:14px">Jumpa lagi di Sabah. See you again!</p></div></div>
+    <div style="position:absolute;left:0;right:0;top:calc(var(--sb) + 36px);text-align:center"><img src="/img/logo_mark.webp" alt="" style="width:112px;height:auto;margin:0 auto"><h1 style="font-size:30px;font-weight:800;color:var(--navy);margin-top:8px">Terima Kasih!</h1><p style="color:var(--ink2);font-size:14px">Jumpa lagi di Sabah. See you again!</p></div></div>
     <div class="pad"><div class="facts" style="margin-top:-30px;position:relative"><div class="fact">${ic('cal')}<b>Days</b><span>5 days</span></div><div class="fact">${ic('pin')}<b>Places</b><span>8 visited</span></div><div class="fact">${ic('gift')}<b>Points</b><span>${S.points.toLocaleString()}</span></div></div>
     <div class="card" style="padding:18px;margin-top:16px;text-align:center"><b>How was your Sabah journey?</b><div class="stars" style="margin:12px 0">${[1,2,3,4,5].map(i=>`<button class="${S.rating>=i?'on':''}" onclick="S.rating=${i};refresh()" aria-label="${i} star">${ic('star')}</button>`).join('')}</div>
     <textarea class="inp" id="rev" aria-label="Your review" placeholder="Share a highlight with future travellers…"></textarea>
@@ -993,10 +994,10 @@ SCREENS.mhome = () => {
   statusLight=true; const M=S.merchant;
   const grid=[['qr','Receive payment',"go('mqr')"],['box','Products',"go('mlist','products')"],['receipt','Orders',"go('mlist','orders')"],['megaphone','Promotions',"go('mlist','promos')"],['star','Reviews',"go('mlist','reviews')"],['settings','Settings',"go('mlist','settings')"]];
   return page({ cls:'mscr',
-    header:`<header class="hdr dark"><img src="img/fisherman.jpg" alt="" style="width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid #fff"><div class="hdr-t" style="text-align:left"><h1>Sabah GO Merchant</h1><p>Gerai Laut Pak Hamid · Gaya Street</p></div><button class="ib" onclick="tab('profile');toast('Back to traveller app','swap')" aria-label="Switch to traveller app">${ic('swap')}</button></header>`,
+    header:`<header class="hdr dark"><img src="/img/fisherman.jpg" alt="" style="width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid #fff"><div class="hdr-t" style="text-align:left"><h1>Sabah GO Merchant</h1><p>Gerai Laut Pak Hamid · Gaya Street</p></div><button class="ib" onclick="tab('profile');toast('Back to traveller app','swap')" aria-label="Switch to traveller app">${ic('swap')}</button></header>`,
     body:`<div class="mbal"><p class="small muted">Selamat datang! Today's sales</p><div class="row between"><div class="amt">${rm(M.sales)}</div><button class="btn-ghost small b" style="color:#0E8F57" onclick="go('mlist','analytics')">View analytics ›</button></div><p class="small" style="color:var(--ink2)"><b>${M.count}</b> transactions · paid out next business day</p></div>
     <div class="sec" style="margin-top:18px"><div class="mgrid">${grid.map(([i,l,on])=>`<button onclick="${on}"><span class="ico">${ic(i)}</span>${l}</button>`).join('')}</div></div>
-    <div class="sec"><div class="sec-h"><h2>Latest payments</h2><button style="color:#0E8F57" onclick="go('mlist','orders')">See all</button></div><div class="pad"><div class="list">${M.pays.map(([n,l,f,a,tm])=>`<div class="li"><span class="lg2" style="width:50px;height:34px;border-radius:9px;border:1px solid var(--line);display:grid;place-items:center;padding:4px;flex-shrink:0"><img src="img/${l}.png" alt="" style="max-width:100%;max-height:100%;object-fit:contain"></span><span class="tx"><b>${f} ${n}</b><small>Today ${tm} · in MYR</small></span><span class="amt pos">+ RM ${a}</span></div>`).join('')}</div></div></div>
+    <div class="sec"><div class="sec-h"><h2>Latest payments</h2><button style="color:#0E8F57" onclick="go('mlist','orders')">See all</button></div><div class="pad"><div class="list">${M.pays.map(([n,l,f,a,tm])=>`<div class="li"><span class="lg2" style="width:50px;height:34px;border-radius:9px;border:1px solid var(--line);display:grid;place-items:center;padding:4px;flex-shrink:0"><img src="/img/${l}.png" alt="" style="max-width:100%;max-height:100%;object-fit:contain"></span><span class="tx"><b>${f} ${n}</b><small>Today ${tm} · in MYR</small></span><span class="amt pos">+ RM ${a}</span></div>`).join('')}</div></div></div>
     <div class="pad" style="margin-top:16px"><div class="info-box green">${ic('trend')}<span>You're registered and licensed. Tourists see your stall on the map, and you get free training and support.</span></div></div>`
   });
 };
