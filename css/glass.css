@@ -201,3 +201,6 @@ svg.ch path.area-in,svg.ch circle.dot-in{animation:fadeIn .9s var(--out) .9s bac
 .lp-top .lp-photo div{background-position:60% 6%}
 .lp-top .lp-scrim{background:linear-gradient(90deg,rgba(8,30,84,.86) 0%,rgba(10,36,99,.58) 36%,rgba(10,36,99,.10) 66%,rgba(10,36,99,.16) 100%),linear-gradient(180deg,rgba(8,30,84,.18) 0%,rgba(8,30,84,0) 28%,rgba(8,30,84,.32) 100%)}
 .lp-top .lp-stat{background:rgba(8,30,84,.34);border-color:rgba(255,255,255,.28)}
+/* the hero sets two pictures (Kinabalu, then a fallback); size and repeat must apply to both layers,
+   or the first one tiles at its natural size on wide screens */
+.lp-top .lp-photo div{background-size:cover;background-repeat:no-repeat}

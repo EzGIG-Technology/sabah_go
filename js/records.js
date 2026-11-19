@@ -160,7 +160,7 @@ function renderPicker(){
       <span class="meta hide-sm">${fmtD(LAST,{weekday:'short',day:'numeric',month:'short',year:'numeric'})}, <span data-clock>${HHMM}:00</span> ${MYT}<br>Sample data</span></nav>
     <div class="lp-hero"><div><h1>Every ringgit traced.</h1>
       <p>One platform for the Tourist Entry Contribution: the visitor app, collection, and a dashboard for each ministry, hosted in Malaysia.</p>
-      <div class="lp-actions"><button class="btn btn-w" onclick="document.getElementById('portals').scrollIntoView({behavior:'smooth'})">${ic('lock')}Sign in to a portal</button><button class="btn btn-glass" onclick="document.getElementById('journey').scrollIntoView({behavior:'smooth'})">Follow the Lin family</button></div></div>
+      <div class="lp-actions"><button class="btn btn-w" onclick="document.getElementById('portals').scrollIntoView({behavior:'smooth'})">${ic('lock')}Sign in to a portal</button></div></div>
       <div class="lp-stats">
         <div class="lp-stat"><b data-static>${fmtN(DECK_TOTAL_2025)}</b><span>international visitors in 2025 (Sabah GO deck)</span></div>
         <div class="lp-stat"><b>${fmtN(IN_SABAH)}</b><span>pass holders in Sabah now</span></div>
@@ -171,9 +171,6 @@ function renderPicker(){
   <div class="lp lp-body">
     <section class="lp-sec" id="portals" style="margin-top:0"><h2>Sign in</h2><p>Choose your portal. Each one shows only what that role needs.</p></section>
     <div class="lp-grid">${pcard('app',APP_PORTAL)}${Object.entries(ROLES).map(([k,r])=>pcard(k,r)).join('')}${pcard('command',COMMAND_PORTAL)}</div>
-    <section class="journey lp-sec" id="journey"><h2>Follow one family through the system</h2><p>The Lin family from Shanghai: Lin Wei, Chen Yu and Xiaomei, 8. Pick a moment to see what each ministry receives.</p>
-      <div class="jsteps">${JOURNEY.map((j,i)=>`<button class="jstep ${i===JSEL?'on':''}" onclick="pickJ(${i})"><span class="t">${j.t}</span><b>${j.b}</b><span>${j.s}</span></button>`).join('')}</div>
-      <div class="jdetail" id="jdetail">${jdetail()}</div></section>
     <footer class="lp-foot"><b>Sabah GO. Your Journey Enriched.</b><span>Ready to launch June 2027 · Proposed by EzGIG / Microtek Solutions</span><span>Sample data, labelled as such. Names and records are fictitious.</span></footer>
   </div>`;
 }
