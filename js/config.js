@@ -15,7 +15,7 @@ const LOGO = {
 };
 /* key: [generated file in /img/console/, fallback photo already in /img/] */
 const IMGS = {
-  hero:['hero.jpg','hero_sabah.jpg'], p_app:['portal-app.jpg','home_hero.jpg'], appbg:['app-bg.jpg','semporna_hero.jpg'],
+  hero:['hero-kinabalu.jpg','hero.jpg'], p_app:['portal-app.jpg','home_hero.jpg'], appbg:['app-bg.jpg','semporna_hero.jpg'],
   p_ops:['portal-ops.jpg','semporna_overview.jpg'], p_tourism:['portal-tourism.jpg','culture4.jpg'], p_finance:['portal-finance.jpg','villas.jpg'],
   p_immigration:['portal-immigration.jpg','airport_sunset.jpg'], p_merchant:['portal-merchant.jpg','market1.jpg'], p_command:['portal-command.jpg','kinabalu_eco.jpg'],
   d_kk:['dest-kota-kinabalu.jpg','kk_city.jpg'], d_tarp:['dest-tar-park.jpg','manukan.jpg'], d_kpark:['dest-kinabalu-park.jpg','kinabalu_park.jpg'], d_summit:['dest-kinabalu-summit.jpg','t_kinabalu.jpg'],

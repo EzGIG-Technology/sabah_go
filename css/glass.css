@@ -196,3 +196,8 @@ svg.ch path.area-in,svg.ch circle.dot-in{animation:fadeIn .9s var(--out) .9s bac
 .rv:not(.rv-in) .bar-in,.rv:not(.rv-in) .line-in,.rv:not(.rv-in) .area-in,.rv:not(.rv-in) .dot-in,.rv:not(.rv-in) .bar i,.rv:not(.rv-in) .donut-wrap svg.ch{animation:none}
 /* print: every chart fully drawn */
 @media print{*,*:before,*:after{animation:none!important;transition:none!important}svg.ch path.line-in,.kpi .sp path{stroke-dashoffset:0!important;stroke-dasharray:none!important}}
+/* landing hero: Mount Kinabalu at dawn. The scrim stays dark behind the headline on the left
+   and opens up on the right so the summit, cloud sea and sunrise show through. */
+.lp-top .lp-photo div{background-position:60% 6%}
+.lp-top .lp-scrim{background:linear-gradient(90deg,rgba(8,30,84,.86) 0%,rgba(10,36,99,.58) 36%,rgba(10,36,99,.10) 66%,rgba(10,36,99,.16) 100%),linear-gradient(180deg,rgba(8,30,84,.18) 0%,rgba(8,30,84,0) 28%,rgba(8,30,84,.32) 100%)}
+.lp-top .lp-stat{background:rgba(8,30,84,.34);border-color:rgba(255,255,255,.28)}
