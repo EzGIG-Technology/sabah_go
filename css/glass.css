@@ -204,3 +204,7 @@ svg.ch path.area-in,svg.ch circle.dot-in{animation:fadeIn .9s var(--out) .9s bac
 /* the hero sets two pictures (Kinabalu, then a fallback); size and repeat must apply to both layers,
    or the first one tiles at its natural size on wide screens */
 .lp-top .lp-photo div{background-size:cover;background-repeat:no-repeat}
+/* landing footer: Microtek Solutions logo in place of the launch line */
+.lp-foot{align-items:center}
+.lp-foot .lp-partner{height:64px;width:auto;display:block}
+@media (max-width:560px){.lp-foot .lp-partner{height:52px}}
