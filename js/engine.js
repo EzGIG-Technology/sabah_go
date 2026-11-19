@@ -240,5 +240,8 @@ const ARR_TARGET_2027 = 920000;   // June to December 2027 international arrival
 const DISTRICTS = [ // name, col, row, share of visitors in Sabah, spend weight
  ['Kudat',2,0,4,1],['Kota Marudu',3,1,1,.6],['Kota Belud',1,1,3,.9],['Tuaran',1,2,4,1],['Ranau',2,2,11,1.1],['Sandakan',5,2,8,1],
  ['Kota Kinabalu',0,3,30,1.2],['Penampang',1,3,3,.9],['Kinabatangan',4,3,5,1.1],['Lahad Datu',5,4,2,1],['Papar',0,4,2,.8],['Keningau',1,4,1.5,.7],
- ['Beaufort',0,5,2,.7],['Tenom',1,5,1.5,.7],['Tawau',4,5,6,.9],['Semporna',5,5,13,1.3],['Sipitang',0,6,1,.6]];
+ ['Beaufort',0,5,2,.7],['Tenom',1,5,1.5,.7],['Tawau',4,5,6,.9],['Semporna',5,5,13,1.3],['Sipitang',0,6,1,.6],
+ // the other ten of Sabah's 27 districts, added after the original list so existing indexes stay put
+ ['Putatan',0,2,1,.8],['Tambunan',2,3,1,.8],['Kuala Penyu',1,6,.6,.7],['Nabawan',2,5,.3,.6],['Kalabakan',3,5,.4,.6],
+ ['Kunak',4,4,.5,.8],['Tongod',3,3,.3,.6],['Telupid',3,2,.3,.6],['Beluran',4,2,.5,.7],['Pitas',3,0,.3,.6]];
 

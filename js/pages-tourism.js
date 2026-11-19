@@ -3,10 +3,42 @@
    destination capacity, official alerts
    ===================================================================== */
 const HEATC = ['#D4E4F9','#9CC3F5','#4D8EEB','#1460E0','#0A2463'];
-function dmap(vals, {fmt=fmtN, unit='visitors', sel}={}){ const sorted=vals.slice().sort((a,b)=>a-b), q=v=>{ const r=sorted.indexOf(v)/(sorted.length-1||1); return Math.min(4,Math.floor(r*5)); };
-  const cells=Array.from({length:7*7},(_,i)=>null); DISTRICTS.forEach((x,i)=>{ cells[x[2]*7+x[1]]=i; });
-  return `<div class="dmap" role="img" aria-label="Tile map of Sabah districts">${cells.map(i=>i===null?'<div></div>':`<div class="dtile" title="${DISTRICTS[i][0]}: ${fmt(vals[i])} ${unit}" style="background:${HEATC[q(vals[i])]};${q(vals[i])<=1?'color:#0A2463':''};${sel===i?'outline:2px solid #FF8A1F':''}"><span>${DISTRICTS[i][0]}</span><b>${fmt(vals[i])}</b></div>`).join('')}</div>
-  <div class="row small muted" style="margin-top:8px;gap:6px">Fewer ${HEATC.map(c=>`<i style="width:18px;height:10px;border-radius:3px;background:${c};display:inline-block"></i>`).join('')} more · tile map, not to scale</div>`; }
+/* District view: a real map of Sabah's 27 districts (default) or the tile map.
+   Each district is coloured by a volume band; the number is the count there now. */
+let DVIEW = 'map';
+const DBANDS_PEOPLE = [0,250,1000,2500,5000];
+function dbands(vals, unit){
+  if(unit==='visitors') return DBANDS_PEOPLE;
+  const s=vals.slice().sort((x,y)=>x-y), nice=v=>{ if(v<=0) return 0; const m=Math.pow(10,Math.floor(Math.log10(v))-1); return Math.round(v/m)*m; };
+  const b=[0,...[.2,.4,.6,.8].map(q=>nice(s[Math.floor(q*(s.length-1))]))];
+  return b.filter((v,i)=>i===0||v>b[i-1]);
+}
+const dband = (v, br) => { let k=0; br.forEach((t,i)=>{ if(v>=t) k=i; }); return Math.min(4, Math.round(k*(4/Math.max(1,br.length-1)))); };
+function setDView(v){ DVIEW=v; document.querySelectorAll('.dview').forEach(e=>{ e.dataset.v=v; e.querySelectorAll('.dv-seg button').forEach(b=>{ const on=b.dataset.v===v; b.classList.toggle('on',on); b.setAttribute('aria-pressed',on); }); }); }
+function dsvg(vals, br, {fmt, unit, sel}){
+  if(typeof SABAH_GEO==='undefined') return '';
+  const G=SABAH_GEO, idx=Object.fromEntries(DISTRICTS.map((x,i)=>[x[0],i]));
+  // districts too small to hold a label get a callout in the sea, west of the coast
+  const CALL={'Kota Kinabalu':[168,288],'Putatan':[146,346],'Penampang':[128,396],'Kuala Penyu':[104,456]};
+  let paths='', labs='', calls='';
+  Object.entries(G.d).forEach(([n,d])=>{ const i=idx[n]; if(i==null) return; const k=dband(vals[i],br), dark=k>=2;
+    paths+=`<path d="${d}" fill="${HEATC[k]}" class="${sel===i?'on':''}"><title>${n}: ${fmt(vals[i])} ${unit}</title></path>`;
+    const [x,y,room]=G.lab[n], ink=dark?'#fff':'#0A2463';
+    if(CALL[n]){ const [cx,cy]=CALL[n]; calls+=`<line x1="${x}" y1="${y}" x2="${cx+4}" y2="${cy-4}" class="ld"/><circle cx="${x}" cy="${y}" r="2.5" class="ldot"/><text x="${cx}" y="${cy-14}" text-anchor="end" class="dn ext">${n}</text><text x="${cx}" y="${cy+6}" text-anchor="end" class="dv ext">${fmt(vals[i])}</text>`; return; }
+    if(room>=22) labs+=`<text x="${x}" y="${y-4}" text-anchor="middle" class="dn" fill="${ink}">${n}</text><text x="${x}" y="${y+17}" text-anchor="middle" class="dv" fill="${ink}">${fmt(vals[i])}</text>`;
+    else labs+=`<text x="${x}" y="${y+6}" text-anchor="middle" class="dv" fill="${ink}"><title>${n}</title>${fmt(vals[i])}</text>`; });
+  return `<svg class="dsvg" viewBox="0 0 ${G.w} ${G.h}" role="img" aria-label="Map of Sabah's districts, coloured by ${unit}">${paths}${calls}${labs}</svg>`;
+}
+function dmap(vals, {fmt=fmtN, unit='visitors', sel}={}){
+  const br=dbands(vals,unit), k=v=>dband(v,br), tiles=Array.from({length:7*7},()=>null); DISTRICTS.forEach((x,i)=>{ tiles[x[2]*7+x[1]]=i; });
+  const band=(i)=>br[i+1]!=null?`${fmt(br[i])} to ${fmt(br[i+1]-(unit==='visitors'?1:0))}`:`${fmt(br[i])} and over`;
+  const legend=br.map((_,i)=>`<span><i style="background:${HEATC[Math.min(4,Math.round(i*(4/Math.max(1,br.length-1))))]}"></i>${i===0&&unit==='visitors'?'Under '+fmt(br[1]):band(i)}</span>`).join('');
+  return `<div class="dview" data-v="${DVIEW}">
+  <div class="dv-seg seg" role="group" aria-label="District view"><button data-v="map" class="${DVIEW==='map'?'on':''}" aria-pressed="${DVIEW==='map'}" onclick="setDView('map')">Map</button><button data-v="tiles" class="${DVIEW==='tiles'?'on':''}" aria-pressed="${DVIEW==='tiles'}" onclick="setDView('tiles')">Tiles</button></div>
+  <div class="dv-map">${dsvg(vals,br,{fmt,unit,sel})}</div>
+  <div class="dv-tiles"><div class="dmap" role="img" aria-label="Tile map of Sabah districts">${tiles.map(i=>i===null?'<div></div>':`<div class="dtile" title="${DISTRICTS[i][0]}: ${fmt(vals[i])} ${unit}" style="background:${HEATC[k(vals[i])]};${k(vals[i])<=1?'color:#0A2463':''};${sel===i?'outline:2px solid #FF8A1F':''}"><span>${DISTRICTS[i][0]}</span><b>${fmt(vals[i])}</b></div>`).join('')}</div></div>
+  <div class="dv-legend small muted">${legend}<span class="dv-unit">${unit==='visitors'?'pass holders in each district':unit}</span></div>
+  <div class="dv-note small muted"><span class="dv-mapnote">Boundaries: geoBoundaries (CC BY 3.0).</span><span class="dv-tilenote">Tile map, not to scale.</span></div></div>`; }
 const REVIEWS = [['Park Ji-woo',MI.KR,5,'Semporna Island Hopping Co.','Paid the entry contribution before landing and the scan at KKIA took a second.'],['Olivia Brown',MI.AU,4,'Kinabalu Park','The climb was the highlight of our year. I wish the app showed porter availability.'],['Wang Lei',MI.CN,5,'Tamu Kota Belud','Alipay worked at every stall. Bella AI translated everything for us.'],['Lukas Weber',MI.DE,3,'Jesselton Point Ferry','The ferry was fine but the 10am queue for Manukan was long.'],['Sato Yuki',MI.JP,5,'Sepilok Orangutan Centre','Well organised. The feeding-time reminder in the app was useful.']];
 PAGES.tourism = {
 overview(){
