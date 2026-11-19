@@ -171,6 +171,7 @@ function renderPicker(){
   <div class="lp lp-body">
     <section class="lp-sec" id="portals" style="margin-top:0"><h2>Sign in</h2><p>Choose your portal. Each one shows only what that role needs.</p></section>
     <div class="lp-grid">${pcard('app',APP_PORTAL)}${Object.entries(ROLES).map(([k,r])=>pcard(k,r)).join('')}${pcard('command',COMMAND_PORTAL)}</div>
+    ${flowTree()}
     <footer class="lp-foot"><b>Sabah GO. Your Journey Enriched.</b><img class="lp-partner" src="/img/logos/microtek-solutions.png" alt="Microtek Solutions: Innovate, Integrate, Inspire"><span>Sample data, labelled as such. Names and records are fictitious.</span></footer>
   </div>`;
 }
