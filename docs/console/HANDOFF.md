@@ -61,7 +61,7 @@ Commit on a new branch called console and open a pull request.
 
 | Global | Shape | Live source |
 |---|---|---|
-| `LAST`, `NDAYS` | Day index of today; days since go-live (1 June 2027) | Server clock in MYT |
+| `LAST`, `NDAYS` | Day index of today; days since go-live (the most recent 1 June) | Server clock in MYT |
 | `MKT` | `[iso, name, …]` source markets | Reference table |
 | `CP` | Checkpoints `{id, name, short, mode, share, kiosks, unpaid, district}` | Reference table |
 | `RAIL` | `[method, fee rate]` payment methods | Acquirer contract |
@@ -99,12 +99,12 @@ The arithmetic checks in every report test these rules. If a check fails on live
   - Puan Aminah and "Kuih & Kraf Aminah";
   - every officer name: Hafiz Mansor, Siti Mariam Yusof and the others in `ROLES`;
   - every traveller, merchant, ticket and pass ID.
-- **Market figures.** The 2025 figures come from the Sabah GO deck. The 2027 growth, budget and arrival target (920,000 from June to December 2027) are assumptions.
+- **Market figures.** The 2025 figures are published arrival figures. The growth, budget and arrival target (920,000 from June to December of the go-live year) are assumptions.
 - **Rates and system figures.** These are placeholders:
   - acquirer fee rates;
   - the uptime and payment success figures;
   - Bella AI conversation counts.
-- **Simulated clock.** The operating date is the viewer's date mapped to 2027 (or 2028 for January to May), at 15:20 MYT. Remove it with the engine.
+- **Simulated clock.** The operating date is the viewer's own date, at 15:20 MYT; go-live is the most recent 1 June. Remove it with the engine.
 - **Logos.** Logos are used here for a proposal prototype only. Get each agency's approval before any public use.
 - **"Sample data" badges.** These appear on every screen. Remove them only when the data is live.
 

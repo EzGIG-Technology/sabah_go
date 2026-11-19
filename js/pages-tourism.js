@@ -46,7 +46,7 @@ overview(){
   return `<div class="grid g-kpi">
     ${kpi({label:'Arrivals this month',value:fmtN(MT.n),d:chg(MT.n,MLY),foot:'against the same days last year',icon:'plane',hero:true,sp:L30.map(d=>DAY[d].n)})}
     ${kpi({label:'Arrivals · '+rangeL(),value:fmtN(T.n),d:S.range==='mtd'?null:chg(T.n,LYt),foot:'international visitors',icon:'enter'})}
-    ${kpi({label:'Progress to the 2027 target',value:pct(live.n/ARR_TARGET_2027*100,1),foot:`${fmtN(live.n)} of ${fmtN(ARR_TARGET_2027)}, June to December`,icon:'flag'})}
+    ${kpi({label:`Progress to the ${GO_LIVE_YEAR} target`,value:pct(live.n/ARR_TARGET*100,1),foot:`${fmtN(live.n)} of ${fmtN(ARR_TARGET)}, June to December`,icon:'flag'})}
     ${kpi({label:'Pass holders in Sabah now',value:fmtN(IN_SABAH),icon:'pin'})}
     ${kpi({label:'Spending per visitor',value:sen(Math.round(T.sp/Math.max(1,T.n))),foot:S.range==='today'?'arrivals so far today':'through Sabah GO',icon:'wallet'})}
   </div>
@@ -72,7 +72,7 @@ movement(){
 markets(){
   const pk=S.f.mp||'mtd', [a,b]=PERIODS[pk].r(), T=tot(a,b), g=grows(cube(a,b,{}, 'mkt'),'mkt','n');
   const topCp = m => { let best=0,bi=0; for(let c=0;c<NC;c++){ let s=0; for(let d=a; d<=b; d++) s+=F.n[ix(d,c,m)]; if(s>best){best=s;bi=c;} } return CP[bi].short; };
-  return phead('International arrivals by nationality from verified pass entries, against last year. Last year is built from the 2025 figures in the Sabah GO deck.', chips([['last7','7 days'],['last30','30 days'],['mtd','Month to date'],['lastMonth','Last month'],['live','Since go-live']], pk, 'setMp'))
+  return phead('International arrivals by nationality from verified pass entries, against last year. Last year is built from the 2025 arrival figures.', chips([['last7','7 days'],['last30','30 days'],['mtd','Month to date'],['lastMonth','Last month'],['live','Since go-live']], pk, 'setMp'))
   + `<div class="grid g-2e">${card('Share of arrivals', donut([...g.slice(0,6).map((o,i)=>({label:MKT[o.key][1],value:o.n,color:PAL[i]})),{label:'All other markets',value:g.slice(6).reduce((s,o)=>s+o.n,0),color:'#8592AD'}],{center:kN(T.n),sub:PERIODS[pk].l.toLowerCase()}))}
     ${card('Top three markets by month', lineChart({labels:MONTHKEYS.map(k=>MONTHS[k%100]), every:1, area:false, series:g.slice(0,3).map((o,i)=>({name:MKT[o.key][1],color:['#1460E0','#22B5F0','#0A2463'][i],data:MONTHKEYS.map(k=>tot(...monthRange(k),{mkts:[o.key]}).n)}))}))}</div>
   ${card('All source markets · '+PERIODS[pk].l, table([{h:'Market',v:o=>`<span class="row">${cc(o.key)}<b>${MKT[o.key][1]}</b></span>`},{h:'Arrivals',r:1,v:o=>fmtN(o.n)},{h:'Share',r:1,v:o=>pct(o.n/T.n*100)},{h:'Last year',r:1,v:o=>fmtN(lySum(a,b,[o.key]))},{h:'Change',r:1,v:o=>delta(chg(o.n,lySum(a,b,[o.key])))},{h:'Exempt',r:1,v:o=>fmtN(o.ex)},{h:'Average stay',r:1,v:o=>o.dep?(o.dst/o.dep).toFixed(1)+' nights':'n/a'},{h:'Main entry point',v:o=>topCp(o.key)}], g,

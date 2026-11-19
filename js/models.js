@@ -33,8 +33,8 @@ const EVENTS = [
  {n:'Sabah Fest', where:'Kota Kinabalu', day:LAST+19, saved:6830, chk:0, spend:0, img:'e_fest'},
  {n:'KK Jazz Festival', where:'Kota Kinabalu', day:LAST-9, saved:3120, chk:2480, spend:41260000, img:'e_jazz'},
  {n:'Mount Kinabalu Climbathon', where:'Kundasang', day:LAST-31, saved:2950, chk:1920, spend:28840000, img:'e_climb'},
- {n:'Regatta Lepa', where:'Semporna', day:dayOf(2028,3,18), saved:1840, chk:0, spend:0, img:'e_regatta'},
- {n:'Pesta Kaamatan', where:'Penampang', day:dayOf(2028,4,30), saved:2610, chk:0, spend:0, img:'e_kaamatan'},
+ {n:'Regatta Lepa', where:'Semporna', day:dayOf(GO_LIVE_YEAR+1,3,18), saved:1840, chk:0, spend:0, img:'e_regatta'},
+ {n:'Pesta Kaamatan', where:'Penampang', day:dayOf(GO_LIVE_YEAR+1,4,30), saved:2610, chk:0, spend:0, img:'e_kaamatan'},
 ];
 let CAMPAIGNS = [['Borneo Bird Festival, early bird','All markets',82400,33949,1820,26400000],['Go Rural Sabah: Kudat and Tenom','KR, JP, AU',31600,12166,940,11850000],['Kundasang cool escape','SG, BN, HK',22100,9901,1210,9620000],['Tamu and night markets','CN, TW',58900,21263,3480,14190000]];
 const RATINGS = MONTHKEYS.map((k,i)=>{ const resp=Math.round(tot(...monthRange(k)).dep*.29); return {k, c:lr(resp,[1.2,1.8,6.2,25.4+i*.3,65.4-i*.3])}; });

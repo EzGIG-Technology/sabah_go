@@ -162,7 +162,7 @@ function renderPicker(){
       <p>One platform for the Tourist Entry Contribution: the visitor app, collection, and a dashboard for each ministry, hosted in Malaysia.</p>
       <div class="lp-actions"><button class="btn btn-w" onclick="document.getElementById('portals').scrollIntoView({behavior:'smooth'})">${ic('lock')}Sign in to a portal</button></div></div>
       <div class="lp-stats">
-        <div class="lp-stat"><b data-static>${fmtN(DECK_TOTAL_2025)}</b><span>international visitors in 2025 (Sabah GO deck)</span></div>
+        <div class="lp-stat"><b data-static>${fmtN(ARR_TOTAL_2025)}</b><span>international visitors in 2025</span></div>
         <div class="lp-stat"><b>${fmtN(IN_SABAH)}</b><span>pass holders in Sabah now</span></div>
         <div class="lp-stat"><b>${senK(live.gr)}</b><span>TEC collected since go-live</span></div>
         <div class="lp-stat"><b>${rec.variance===0?'100%':'Exception'}</b><span>reconciled yesterday</span></div>

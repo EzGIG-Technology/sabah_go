@@ -20,10 +20,12 @@ const chg = (a,b) => b ? (a-b)/b*100 : 0;
 const plural = (n, one, many) => `${fmtN(n)} ${n===1?one:(many||one+'s')}`;
 
 const NOW = new Date();
-const GO_LIVE_UTC = Date.UTC(2027,5,1);
-/* Operating clock: the viewer's calendar day in the first operating year, at a fixed 15:20 MYT
-   so every screen shows the same moment whatever time the demo is opened. */
-const SIM = (()=>{ const y = NOW.getMonth()>=5 ? 2027 : 2028; return { y, mo:NOW.getMonth(), d:NOW.getDate(), h:15, mi:20 }; })();
+/* Operating clock: today's date (the viewer's calendar day), at a fixed 15:20 MYT so every screen shows
+   the same moment whatever time the demo is opened. Go-live is the most recent 1 June, so today always
+   falls inside the first operating year. */
+const GO_LIVE_YEAR = NOW.getMonth()>=5 ? NOW.getFullYear() : NOW.getFullYear()-1;
+const GO_LIVE_UTC = Date.UTC(GO_LIVE_YEAR,5,1);
+const SIM = { y:NOW.getFullYear(), mo:NOW.getMonth(), d:NOW.getDate(), h:15, mi:20 };
 const SIM_UTC = Date.UTC(SIM.y, SIM.mo, SIM.d);
 const NDAYS = Math.round((SIM_UTC-GO_LIVE_UTC)/864e5)+1;
 const LAST = NDAYS-1;
@@ -52,9 +54,9 @@ function lr(total, weights){ const s = weights.reduce((a,b)=>a+b,0); if(!s||!tot
   raw.map((v,i)=>[v-fl[i],i]).sort((a,b)=>b[0]-a[0]).slice(0,rem).forEach(([,i])=>fl[i]++); return fl; }
 
 /* ---------- reference ----------
-   code, name, 2025 international arrivals (deck figure where known), growth 2027 vs 2025,
-   average stay (nights), in-app spend per visitor (RM), share under 12 (exempt), real 2025 deck figure? */
-const DECK_TOTAL_2025 = 1498709;
+   code, name, 2025 international arrivals (published figure where known), growth on 2025,
+   average stay (nights), in-app spend per visitor (RM), share under 12 (exempt), published 2025 figure? */
+const ARR_TOTAL_2025 = 1498709;
 const MKT = [
  ['CN','China',657528,1.18,5.2,1650,.090,1],['SG','Singapore',38638,1.06,3.9,1240,.070,1],['GB','UK & Ireland',34704,1.10,10.4,3100,.060,1],
  ['TW','Taiwan',34342,1.12,5.8,1720,.080,1],['AU','Australia',22571,1.14,9.2,2950,.070,1],['JP','Japan',16980,1.09,6.1,2100,.080,1],
@@ -63,7 +65,7 @@ const MKT = [
  ['US','United States',23979,1.12,9.6,3050,.050,0],['DE','Germany',13488,1.10,12.8,3300,.050,0],['FR','France',10491,1.10,11.6,3200,.050,0],['NL','Netherlands',7494,1.07,12.1,3150,.050,0],
  ['OT','Other markets',0,1.08,7.0,1900,.070,0],
 ];
-MKT[15][2] = DECK_TOTAL_2025 - MKT.slice(0,15).reduce((a,m)=>a+m[2],0);
+MKT[15][2] = ARR_TOTAL_2025 - MKT.slice(0,15).reduce((a,m)=>a+m[2],0);
 const NM = MKT.length, MI = Object.fromEntries(MKT.map((m,i)=>[m[0],i]));
 const CP = [
  {id:'KKIA',name:'Kota Kinabalu International Airport',short:'KKIA',mode:'air',share:.790,kiosks:24,unpaid:.012,district:'Kota Kinabalu'},
@@ -109,7 +111,7 @@ const F = {}; ['n','pay','ex','ks','sp','dep','dst','fn','fpay','fks'].forEach(k
   for(let d=0; d<NALL; d++){
     const mo=dmon(d), y=dyear(d), dim=new Date(Date.UTC(y,mo+1,0)).getUTCDate();
     const wd={0:1.04,1:.97,2:.94,3:.97,4:1.0,5:1.10,6:1.10}[dow(d)];
-    const day25 = DECK_TOTAL_2025*SEASON[mo]/SSUM/dim*wd*(1+(er()-.5)*.08);
+    const day25 = ARR_TOTAL_2025*SEASON[mo]/SSUM/dim*wd*(1+(er()-.5)*.08);
     for(let c=0;c<NC;c++) for(let m=0;m<NM;m++){
       const exp = day25*CP[c].share*CPMIX[c][m]*growth(m,d)*(1+(er()-.5)*.18);
       const n = Math.max(0,Math.round(exp)); if(!n) continue; const k=ix(d,c,m);
@@ -188,9 +190,9 @@ const RECON = (()=>{ const out=[]; const XD=LAST-6;
   return out; })();
 
 /* ---------- baselines ---------- */
-/* Last year (2026): the deck's 2025 international arrivals by market, grown 6%, spread by month and weekday. */
+/* Last year: 2025 international arrivals by market, spread by month and weekday. */
 const LY = Array.from({length:NDAYS},(_,d)=>{ const mo=dmon(d), y=dyear(d), dim=new Date(Date.UTC(y,mo+1,0)).getUTCDate(); const wd={0:1.04,1:.97,2:.94,3:.97,4:1.0,5:1.10,6:1.10}[dow(d)];
-  return MKT.map((m,i)=>{ const v=m[2]*1.06*SEASON[mo]/SSUM/dim*wd; return d===LAST?Math.round(v*TODAY_FRAC):Math.round(v); }); });
+  return MKT.map((m,i)=>{ const v=m[2]*SEASON[mo]/SSUM/dim*wd; return d===LAST?Math.round(v*TODAY_FRAC):Math.round(v); }); });
 
 /* ---------- aggregation ---------- */
 const FIELDS = ['n','pay','ex','ks','sp','dep','dst'];
@@ -233,8 +235,8 @@ const MONTHKEYS = monthsInRange(0, LAST);
 
 /* ---------- budget: State TEC revenue estimate by month (rounded to RM 50,000) ---------- */
 const BUDGET = {};
-for(let y=2027;y<=2028;y++) for(let mo=0;mo<12;mo++){ if(y===2027&&mo<5) continue; BUDGET[y*100+mo] = Math.round(DECK_TOTAL_2025*SEASON[mo]/SSUM*1.10*.92*50/50000)*50000*100; }
-const ARR_TARGET_2027 = 920000;   // June to December 2027 international arrivals (sample target)
+for(let y=GO_LIVE_YEAR;y<=GO_LIVE_YEAR+1;y++) for(let mo=0;mo<12;mo++){ if(y===GO_LIVE_YEAR&&mo<5) continue; BUDGET[y*100+mo] = Math.round(ARR_TOTAL_2025*SEASON[mo]/SSUM*1.10*.92*50/50000)*50000*100; }
+const ARR_TARGET = 920000;   // June to December of the go-live year, international arrivals (sample target)
 
 /* ---------- districts (tile map, not to scale) ---------- */
 const DISTRICTS = [ // name, col, row, share of visitors in Sabah, spend weight
